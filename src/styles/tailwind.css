@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Background Colors */
+    --bg-primary: #010101;
+    --bg-secondary: #1c1c1c;
+    --bg-overlay: #1c1c1c66;
+    --bg-card: #1e1e1e;
+    --bg-card-hover: #1e1e1e9e;
+    --bg-accent: #1f1f1f;
+    --bg-gold: #979546;
+
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #000000;
+  }
+}
+
+@layer utilities {
+  /* Background Colors */
+  .bg-primary {
+    background-color: var(--bg-primary);
+  }
+  .bg-secondary {
+    background-color: var(--bg-secondary);
+  }
+  .bg-overlay {
+    background-color: var(--bg-overlay);
+  }
+  .bg-card {
+    background-color: var(--bg-card);
+  }
+  .bg-card-hover {
+    background-color: var(--bg-card-hover);
+  }
+  .bg-accent {
+    background-color: var(--bg-accent);
+  }
+  .bg-gold {
+    background-color: var(--bg-gold);
+  }
+
+  /* Text Colors */
+  .text-primary {
+    color: var(--text-primary);
+  }
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+}
