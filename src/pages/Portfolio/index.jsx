@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '../../components/common/Header';
+import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import HeroSection from './HeroSection';
 import TeamSection from './TeamSection';
@@ -10,7 +10,7 @@ import ContactForm from './ContactForm';
 const Portfolio = () => {
   return (
     <div className="min-h-screen bg-primary">
-      <Header />
+      <Navbar />
       <main>
         <HeroSection />
         <TeamSection />
