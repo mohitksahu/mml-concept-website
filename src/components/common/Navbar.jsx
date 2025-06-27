@@ -3,16 +3,65 @@ import '../../styles/Navbar.css';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);    // Handle scroll effect
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    const [activeSection, setActiveSection] = useState('');
+
+    // Handle scroll effect, visibility, and active section detection
     useEffect(() => {
         const handleScroll = () => {
-            const scrollTop = window.scrollY;
-            setIsScrolled(scrollTop > 50);
+            const currentScrollY = window.scrollY;
+
+            // Update scrolled state
+            setIsScrolled(currentScrollY > 50);
+
+            // Smart visibility based on scroll direction
+            if (currentScrollY < 10) {
+                // Always show navbar at top
+                setIsVisible(true);
+            } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                // Scrolling down - hide navbar
+                setIsVisible(false);
+                // Close mobile menu if open while scrolling down
+                if (isMobileMenuOpen) {
+                    setIsMobileMenuOpen(false);
+                }
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up - show navbar
+                setIsVisible(true);
+            }
+
+            // Active section detection
+            const sections = [
+                { id: 'hero-section', name: 'services' },
+                { id: 'team-section', name: 'testimonial' },
+                { id: 'pricing-section', name: 'pricing' },
+                { id: 'contact-form', name: 'join-us' }
+            ];
+
+            const navbarHeight = isScrolled ? 52 : 60;
+            const scrollPosition = currentScrollY + navbarHeight + 100;
+
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const element = document.getElementById(sections[i].id);
+                if (element && element.offsetTop <= scrollPosition) {
+                    setActiveSection(sections[i].name);
+                    break;
+                }
+            }
+
+            // Default to first section if at very top
+            if (currentScrollY < 100) {
+                setActiveSection('services');
+            }
+
+            setLastScrollY(currentScrollY);
         };
 
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [lastScrollY, isMobileMenuOpen, isScrolled]);
 
     // Handle click outside to close mobile menu
     useEffect(() => {
@@ -67,66 +116,65 @@ const Navbar = () => {
                 });
             }
         }
-    };
-
-    return (<header
-        className={`navbar-container bg-primary ${isScrolled ? 'navbar-scrolled' : ''}`}
-        style={{
-            backgroundImage: "url('/images/img_image_3.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-        }}
-    >
-        <div className="navbar-layout">
-            {/* Logo */}
-            <div className="navbar-logo-container">
-                <img
-                    src="/images/img_61d446190afc4863a3a6e228820af569jpegremovebgpreview_2.png"
-                    alt="Company Logo"
-                    className="navbar-logo"
-                />
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-                className="mobile-menu-btn"
-                onClick={toggleMobileMenu}
-                aria-label="Toggle mobile menu"
-            >
-                <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
-                <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
-                <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
-            </button>            {/* Navigation */}
-            <nav className={`navbar-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
-                <button
-                    className="navbar-btn"
-                    onClick={() => handleNavClick('testimonial')}
-                >
-                    Testimonial
-                </button>
-                <button
-                    className="navbar-btn"
-                    onClick={() => handleNavClick('services')}
-                >
-                    Services
-                </button>
-                <button
-                    className="navbar-btn"
-                    onClick={() => handleNavClick('pricing')}
-                >
-                    Pricing
-                </button>                <div className="join-us-container">
-                    <div className="join-us-shadow"></div>
-                    <button
-                        className="join-us-btn"
-                        onClick={() => handleNavClick('join-us')}
-                    >
-                        Join Us
-                    </button>
+    }; return (
+        <header
+            className={`navbar-container bg-primary ${isScrolled ? 'navbar-scrolled' : ''} ${isVisible ? 'navbar-visible' : 'navbar-hidden'} ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
+            style={{
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+            }}
+        >
+            <div className="navbar-layout">                {/* Logo */}
+                <div className="navbar-logo-container">
+                    <img
+                        src="/images/_61d44619-0afc-4863-a3a6-e228820af569.jpeg.png"
+                        alt="Company Logo"
+                        className="navbar-logo"
+                    />
                 </div>
-            </nav>
-        </div>
-    </header>
+
+                {/* Mobile Menu Button */}
+                <button
+                    className="mobile-menu-btn"
+                    onClick={toggleMobileMenu}
+                    aria-label="Toggle mobile menu"
+                >
+                    <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+                    <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+                    <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+                </button>                {/* Navigation */}
+                <nav className={`navbar-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+                    <button
+                        className={`navbar-btn ${activeSection === 'testimonial' ? 'active' : ''}`}
+                        onClick={() => handleNavClick('testimonial')}
+                    >
+                        Testimonial
+                    </button>
+                    <button
+                        className={`navbar-btn ${activeSection === 'services' ? 'active' : ''}`}
+                        onClick={() => handleNavClick('services')}
+                    >
+                        Services
+                    </button>
+                    <button
+                        className={`navbar-btn ${activeSection === 'pricing' ? 'active' : ''}`}
+                        onClick={() => handleNavClick('pricing')}
+                    >
+                        Pricing
+                    </button>
+
+                    <div className="join-us-container">
+                        <div className="join-us-shadow"></div>
+                        <button
+                            className={`join-us-btn ${activeSection === 'join-us' ? 'active' : ''}`}
+                            onClick={() => handleNavClick('join-us')}
+                        >
+                            Join Us
+                        </button>
+                    </div>
+                </nav>
+            </div>
+        </header>
     );
 };
 
