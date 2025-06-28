@@ -48,7 +48,6 @@ const Navbar = () => {
         const sectionMap = {
             'testimonial': 'team-section', // Assuming testimonials are in team section
             'services': 'hero-section',
-            'pricing': 'pricing-section',
             'join-us': 'contact-form'
         }; const targetId = sectionMap[section];
         if (targetId) {
@@ -106,13 +105,7 @@ const Navbar = () => {
                         onClick={() => handleNavClick('services')}
                     >
                         Services
-                    </button>
-                    <button
-                        className={`navbar-btn ${activeSection === 'pricing' ? 'active' : ''} transition-all duration-600 delay-1000 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
-                        onClick={() => handleNavClick('pricing')}
-                    >
-                        Pricing
-                    </button>                    <div className={`join-us-container transition-all duration-600 delay-1100 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95'}`}>
+                    </button>                    <div className={`join-us-container transition-all duration-600 delay-1000 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95'}`}>
                         <div className="join-us-shadow"></div>
                         <button
                             className={`join-us-btn ${activeSection === 'join-us' ? 'active' : ''}`}

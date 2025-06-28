@@ -3,7 +3,6 @@ import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import HeroSection from './HeroSection';
 import TeamSection from './TeamSection';
-import PricingSection from './PricingSection';
 import ProjectShowcase from './ProjectShowcase';
 import ContactForm from './ContactForm';
 
@@ -14,7 +13,6 @@ const Portfolio = () => {
       <main>
         <HeroSection />
         <TeamSection />
-        <PricingSection />
         <ProjectShowcase />
         <ContactForm />
       </main>
