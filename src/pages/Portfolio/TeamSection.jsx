@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react';
 const TeamSection = () => {
   const [activeTab, setActiveTab] = useState('about');
   const [hasAnimated, setHasAnimated] = useState(false);
-  const [hoveredMember, setHoveredMember] = useState(null);
+  const [currentMemberIndex, setCurrentMemberIndex] = useState(0);
+
+  // Using the same theme color as the "Join Us" button (#a28037)
+  const themeColor = "#a28037";
 
   // Trigger animations on component mount
   useEffect(() => {
@@ -23,7 +26,7 @@ const TeamSection = () => {
       email: "michael@mmlconcepts.com",
       phone: "+1 (555) 123-4567",
       location: "Los Angeles, CA",
-      image: "/images/img_rectangle_100.png",
+      image: "/images/arnesh.jpg",
       specialties: ["Creative Direction", "Video Production", "Brand Strategy"]
     },
     {
@@ -34,7 +37,7 @@ const TeamSection = () => {
       email: "sarah@mmlconcepts.com",
       phone: "+1 (555) 123-4568",
       location: "San Francisco, CA",
-      image: "/images/img_rectangle_89.png",
+      image: "/images/ayush.jpg",
       specialties: ["Video Editing", "Motion Graphics", "Color Grading"]
     },
     {
@@ -45,12 +48,37 @@ const TeamSection = () => {
       email: "david@mmlconcepts.com",
       phone: "+1 (555) 123-4569",
       location: "New York, NY",
-      image: "/images/img_rectangle_126.png",
+      image: "/images/prajwal.jpg",
       specialties: ["Client Relations", "Project Management", "Business Strategy"]
     }
   ];
 
-  const [selectedMember, setSelectedMember] = useState(teamMembers[0]);
+  const [selectedMember, setSelectedMember] = useState(teamMembers[currentMemberIndex]);
+
+  // Auto-slide effect every 5 seconds
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentMemberIndex((prevIndex) => {
+        const newIndex = (prevIndex + 1) % teamMembers.length;
+        setSelectedMember(teamMembers[newIndex]);
+        return newIndex;
+      });
+    }, 5000);
+
+    return () => clearInterval(slideInterval);
+  }, [teamMembers]);
+
+  const handlePrevious = () => {
+    const newIndex = currentMemberIndex === 0 ? teamMembers.length - 1 : currentMemberIndex - 1;
+    setCurrentMemberIndex(newIndex);
+    setSelectedMember(teamMembers[newIndex]);
+  };
+
+  const handleNext = () => {
+    const newIndex = (currentMemberIndex + 1) % teamMembers.length;
+    setCurrentMemberIndex(newIndex);
+    setSelectedMember(teamMembers[newIndex]);
+  };
 
   const tabData = {
     about: {
@@ -92,83 +120,150 @@ const TeamSection = () => {
         </div>
       </div>
 
-      {/* Team Members Grid */}
-      <div className={`max-w-7xl mx-auto px-4 md:px-6 mb-16 transition-all duration-1200 delay-300 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-          {teamMembers.map((member, index) => (
-            <div
-              key={member.id}
-              className={`relative group cursor-pointer transition-all duration-500 delay-${index * 200} ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
-              onMouseEnter={() => setHoveredMember(member.id)}
-              onMouseLeave={() => setHoveredMember(null)}
-              onClick={() => setSelectedMember(member)}
-            >
-              {/* Team Member Card */}
-              <div className="relative bg-white/10 backdrop-blur-sm rounded-3xl p-6 h-full transition-all duration-500 group-hover:transform group-hover:scale-105 group-hover:bg-white/15 border border-white/10">
-                {/* Member Image */}
-                <div className="relative mb-6 overflow-hidden rounded-2xl">
-                  <div className="aspect-square bg-gradient-to-br from-gold/20 to-gold/40 rounded-2xl flex items-center justify-center">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-xl transition-all duration-500 group-hover:scale-110"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
+      {/* Team Member Showcase - Full Width Corner to Corner Section */}
+      <div className={`w-full transition-all duration-1200 delay-300 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        {/* Main Container - Full Width from Corner to Corner with Fixed Large Height */}
+        <div
+          className="relative backdrop-blur-sm shadow-2xl transition-all duration-500 min-h-screen flex items-center"
+          style={{
+            backgroundColor: themeColor,
+            minHeight: '100vh'
+          }}
+        >
+          {/* Color Indicator in Top Right */}
+          <div
+            className="absolute top-6 right-6 w-6 h-6 rounded-full transition-all duration-500 shadow-lg"
+            style={{ backgroundColor: themeColor }}
+          ></div>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={handlePrevious}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gold/20 hover:bg-gold/40 rounded-full p-2 transition-all duration-300 border border-gold/30 z-10"
+          >
+            <svg className="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <button
+            onClick={handleNext}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gold/20 hover:bg-gold/40 rounded-full p-2 transition-all duration-300 border border-gold/30 z-10"
+          >
+            <svg className="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Content Container with Proper Padding - Centered in Full Height Container */}
+          <div className="max-w-6xl mx-auto px-4 md:px-6 py-16 md:py-20 lg:py-24 w-full">
+            {/* Content Layout */}
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 min-h-[60vh]" key={currentMemberIndex}>
+              {/* Left Side - Photo */}
+              <div className="flex-shrink-0 transform transition-all duration-700 hover:scale-105">
+                <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 animate-fadeInScale">
+                  <img
+                    src={teamMembers[currentMemberIndex].image}
+                    alt={teamMembers[currentMemberIndex].name}
+                    className="w-full h-full object-cover rounded-2xl transition-all duration-500 border-4 shadow-2xl transform hover:rotate-1"
+                    style={{ borderColor: themeColor }}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="hidden w-full h-full rounded-2xl items-center justify-center border-4 shadow-2xl animate-fadeInScale" style={{ backgroundColor: `${themeColor}60`, borderColor: themeColor }}>
+                    <span className="text-4xl md:text-5xl font-bold text-white transform transition-all duration-500 hover:scale-110">
+                      {teamMembers[currentMemberIndex].name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Side - Content */}
+              <div className="flex-1 text-center lg:text-left max-w-2xl">
+                {/* Name */}
+                <h3 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gold mb-6 transition-all duration-500 transform animate-slideUpFade leading-tight">
+                  {teamMembers[currentMemberIndex].name}
+                </h3>
+
+                {/* Role */}
+                <p className="text-2xl md:text-3xl lg:text-4xl text-primary/80 font-medium mb-8 transition-all duration-500 transform animate-slideUpFade delay-100">
+                  {teamMembers[currentMemberIndex].role}
+                </p>
+
+                {/* Bio Lines */}
+                <div className="space-y-4 mb-8">
+                  {teamMembers[currentMemberIndex].bio.split('.').filter(line => line.trim()).map((line, idx) => (
+                    <p key={idx} className="text-primary/70 text-lg md:text-xl lg:text-2xl leading-relaxed transition-all duration-500 transform animate-slideUpFade" style={{ animationDelay: `${200 + idx * 100}ms` }}>
+                      {line.trim()}.
+                    </p>
+                  ))}
+                </div>
+
+                {/* Specialties */}
+                <div className="flex flex-wrap justify-center lg:justify-start gap-4 mb-8">
+                  {teamMembers[currentMemberIndex].specialties.map((specialty, idx) => (
+                    <span
+                      key={idx}
+                      className="px-6 py-3 rounded-full text-base md:text-lg font-medium border transition-all duration-500 transform animate-slideUpFade hover:scale-105"
+                      style={{
+                        backgroundColor: `${themeColor}40`,
+                        color: 'white',
+                        borderColor: `${themeColor}70`,
+                        animationDelay: `${400 + idx * 100}ms`
                       }}
-                    />
-                    <div className="hidden w-32 h-32 md:w-40 md:h-40 bg-gold/30 rounded-xl items-center justify-center">
-                      <span className="text-2xl md:text-3xl font-bold text-gold">
-                        {member.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Hover Overlay */}
-                  <div className={`absolute inset-0 bg-gold/90 rounded-2xl flex items-center justify-center transition-all duration-300 ${hoveredMember === member.id ? 'opacity-100' : 'opacity-0'}`}>
-                    <span className="text-white font-semibold">View Details</span>
-                  </div>
+                    >
+                      {specialty}
+                    </span>
+                  ))}
                 </div>
 
-                {/* Member Info */}
-                <div className="text-center">
-                  <h3 className="text-xl md:text-2xl font-bold text-gold mb-2">
-                    {member.name}
-                  </h3>
-                  <p className="text-primary/80 font-medium mb-3">
-                    {member.role}
-                  </p>
-                  <p className="text-primary/70 text-sm leading-relaxed mb-4 line-clamp-3">
-                    {member.bio}
-                  </p>
-
-                  {/* Specialties */}
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {member.specialties.map((specialty, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-gold/20 text-gold text-xs rounded-full border border-gold/30"
-                      >
-                        {specialty}
-                      </span>
-                    ))}
+                {/* Contact Info */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-base md:text-lg">
+                  <div className="text-center lg:text-left transform animate-slideUpFade" style={{ animationDelay: '600ms' }}>
+                    <p className="text-primary/60 mb-2 font-medium">Email</p>
+                    <p className="text-primary/90">{teamMembers[currentMemberIndex].email}</p>
+                  </div>
+                  <div className="text-center lg:text-left transform animate-slideUpFade" style={{ animationDelay: '700ms' }}>
+                    <p className="text-primary/60 mb-2 font-medium">Phone</p>
+                    <p className="text-primary/90">{teamMembers[currentMemberIndex].phone}</p>
+                  </div>
+                  <div className="text-center lg:text-left transform animate-slideUpFade" style={{ animationDelay: '800ms' }}>
+                    <p className="text-primary/60 mb-2 font-medium">Location</p>
+                    <p className="text-primary/90">{teamMembers[currentMemberIndex].location}</p>
                   </div>
                 </div>
-
-                {/* Selected Indicator */}
-                {selectedMember.id === member.id && (
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gold rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs">✓</span>
-                  </div>
-                )}
               </div>
             </div>
-          ))}
+
+            {/* Progress Indicator */}
+            <div className="flex justify-center mt-12 space-x-3 animate-slideUpFade" style={{ animationDelay: '900ms' }}>
+              {teamMembers.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setCurrentMemberIndex(index);
+                    setSelectedMember(teamMembers[index]);
+                  }}
+                  className={`w-4 h-4 rounded-full transition-all duration-300 transform hover:scale-150 ${index === currentMemberIndex
+                    ? 'scale-125 shadow-lg animate-pulse'
+                    : 'hover:scale-110 opacity-60'
+                    }`}
+                  style={{
+                    backgroundColor: index === currentMemberIndex
+                      ? themeColor
+                      : '#666'
+                  }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Selected Member Details Section */}
-      <div className={`relative bg-black/30 backdrop-blur-sm py-16 transition-all duration-1000 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className={`relative bg-black/30 backdrop-blur-sm py-16 mt-16 md:mt-20 transition-all duration-1000 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           {/* Navigation Tabs */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
@@ -177,8 +272,8 @@ const TeamSection = () => {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-3 rounded-full transition-all duration-300 font-medium capitalize ${activeTab === tab
-                    ? 'bg-gold text-white shadow-lg scale-105'
-                    : 'bg-white/10 text-primary/80 hover:bg-white/20 hover:text-white'
+                  ? 'bg-gold text-white shadow-lg scale-105'
+                  : 'bg-white/10 text-primary/80 hover:bg-white/20 hover:text-white'
                   }`}
               >
                 {tab}
@@ -199,19 +294,22 @@ const TeamSection = () => {
             </div>
 
             {/* Right: Selected Member Details */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/10">
+            <div className="backdrop-blur-sm rounded-2xl p-6 md:p-8 border shadow-xl" style={{ backgroundColor: `${themeColor}60`, borderColor: `${themeColor}80` }}>
               <div className="flex items-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-gold/30 to-gold/50 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-xl font-bold text-gold">
-                    {selectedMember.name.split(' ').map(n => n[0]).join('')}
+                <div
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mr-4 transition-all duration-500"
+                  style={{ backgroundColor: `${themeColor}80` }}
+                >
+                  <span className="text-xl font-bold text-white">
+                    {teamMembers[currentMemberIndex].name.split(' ').map(n => n[0]).join('')}
                   </span>
                 </div>
                 <div>
                   <h4 className="text-xl font-bold text-gold">
-                    {selectedMember.name}
+                    {teamMembers[currentMemberIndex].name}
                   </h4>
                   <p className="text-primary/80">
-                    {selectedMember.role}
+                    {teamMembers[currentMemberIndex].role}
                   </p>
                 </div>
               </div>
@@ -222,7 +320,7 @@ const TeamSection = () => {
                   <span className="w-5 h-5 text-gold mr-3">📧</span>
                   <div>
                     <p className="text-primary/60 text-sm">Email</p>
-                    <p className="text-primary/90">{selectedMember.email}</p>
+                    <p className="text-primary/90">{teamMembers[currentMemberIndex].email}</p>
                   </div>
                 </div>
 
@@ -230,7 +328,7 @@ const TeamSection = () => {
                   <span className="w-5 h-5 text-gold mr-3">📱</span>
                   <div>
                     <p className="text-primary/60 text-sm">Phone</p>
-                    <p className="text-primary/90">{selectedMember.phone}</p>
+                    <p className="text-primary/90">{teamMembers[currentMemberIndex].phone}</p>
                   </div>
                 </div>
 
@@ -238,7 +336,7 @@ const TeamSection = () => {
                   <span className="w-5 h-5 text-gold mr-3">📍</span>
                   <div>
                     <p className="text-primary/60 text-sm">Location</p>
-                    <p className="text-primary/90">{selectedMember.location}</p>
+                    <p className="text-primary/90">{teamMembers[currentMemberIndex].location}</p>
                   </div>
                 </div>
               </div>
