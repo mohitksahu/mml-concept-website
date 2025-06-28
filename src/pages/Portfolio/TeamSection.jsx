@@ -262,81 +262,111 @@ const TeamSection = () => {
         </div>
       </div>
 
-      {/* Selected Member Details Section */}
-      <div className={`relative bg-black/30 backdrop-blur-sm py-16 mt-16 md:mt-20 transition-all duration-1000 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
+      {/* About Section with Watermark Design */}
+      <div className={`relative min-h-screen flex items-center transition-all duration-1000 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+        style={{ backgroundColor: '#000000' }}>
+
+        {/* Large Watermark Logo Background */}
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+          <div className="relative w-full h-full flex items-center justify-center">
+            {/* Image Logo Watermark */}
+            <img
+              src="/images/watermarkLogo.png"
+              alt="MML Concepts Logo Watermark"
+              className="w-auto h-[60vh] md:h-[70vh] lg:h-[80vh] max-w-[80vw] object-contain opacity-60 select-none pointer-events-none transition-all duration-500"
+              style={{ filter: `brightness(0.8) contrast(1.1)` }}
+              onError={(e) => {
+                // Fallback to text if image fails to load
+                console.log('Watermark image failed to load, showing fallback text');
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'block';
+              }}
+            />
+            {/* Fallback MML Text Watermark (hidden by default) */}
+            <div className="hidden text-9xl md:text-[20rem] lg:text-[25rem] xl:text-[30rem] font-bold opacity-10 select-none pointer-events-none"
+              style={{ color: themeColor }}>
+              MML
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-6 py-16 md:py-20 lg:py-24">
           {/* Navigation Tabs */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-16">
             {Object.keys(tabData).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3 rounded-full transition-all duration-300 font-medium capitalize ${activeTab === tab
-                  ? 'bg-gold text-white shadow-lg scale-105'
-                  : 'bg-white/10 text-primary/80 hover:bg-white/20 hover:text-white'
+                className={`px-4 md:px-8 py-2 md:py-3 rounded-full transition-all duration-300 font-medium capitalize text-sm md:text-base ${activeTab === tab
+                  ? 'shadow-lg scale-105'
+                  : 'hover:scale-105'
                   }`}
+                style={{
+                  backgroundColor: activeTab === tab ? themeColor : 'rgba(162, 128, 55, 0.2)',
+                  color: 'white',
+                  border: `1px solid ${themeColor}`
+                }}
               >
                 {tab}
               </button>
             ))}
           </div>
 
-          {/* Tab Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            {/* Left: Tab Content */}
-            <div className="space-y-6">
-              <h3 className="text-3xl md:text-4xl font-bold text-gold">
-                {tabData[activeTab].title}
+          {/* Main Content Layout */}
+          <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
+            {/* Left Side - Main Content */}
+            <div className="flex-1 space-y-8">
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                {tabData[activeTab].title.split(' ').map((word, idx) => (
+                  <span key={idx} className={idx === 0 ? 'text-white' : ''} style={{ color: idx > 0 ? themeColor : 'white' }}>
+                    {word}{idx < tabData[activeTab].title.split(' ').length - 1 ? ' ' : ''}
+                  </span>
+                ))}
               </h3>
-              <p className="text-lg text-primary/80 leading-relaxed">
+
+              <p className="text-lg md:text-xl lg:text-2xl text-white/80 leading-relaxed max-w-3xl">
                 {tabData[activeTab].content}
               </p>
             </div>
 
-            {/* Right: Selected Member Details */}
-            <div className="backdrop-blur-sm rounded-2xl p-6 md:p-8 border shadow-xl" style={{ backgroundColor: `${themeColor}60`, borderColor: `${themeColor}80` }}>
-              <div className="flex items-center mb-6">
-                <div
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mr-4 transition-all duration-500"
-                  style={{ backgroundColor: `${themeColor}80` }}
-                >
-                  <span className="text-xl font-bold text-white">
-                    {teamMembers[currentMemberIndex].name.split(' ').map(n => n[0]).join('')}
-                  </span>
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold text-gold">
-                    {teamMembers[currentMemberIndex].name}
-                  </h4>
-                  <p className="text-primary/80">
-                    {teamMembers[currentMemberIndex].role}
-                  </p>
-                </div>
-              </div>
+            {/* Right Side - Contact Information Card */}
+            <div className="flex-shrink-0 w-full lg:w-96">
+              <div className="backdrop-blur-sm rounded-2xl p-6 md:p-8 border shadow-2xl"
+                style={{ backgroundColor: `${themeColor}20`, borderColor: `${themeColor}40` }}>
 
-              {/* Contact Information */}
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <span className="w-5 h-5 text-gold mr-3">📧</span>
+                {/* Current Team Member Info */}
+                <div className="flex items-center mb-8">
+                  <div className="w-16 h-16 rounded-xl flex items-center justify-center mr-4 transition-all duration-500"
+                    style={{ backgroundColor: themeColor }}>
+                    <span className="text-xl font-bold text-white">
+                      {teamMembers[currentMemberIndex].name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
                   <div>
-                    <p className="text-primary/60 text-sm">Email</p>
-                    <p className="text-primary/90">{teamMembers[currentMemberIndex].email}</p>
+                    <h4 className="text-xl font-bold text-white">
+                      {teamMembers[currentMemberIndex].name}
+                    </h4>
+                    <p className="text-white/70">
+                      {teamMembers[currentMemberIndex].role}
+                    </p>
                   </div>
                 </div>
 
-                <div className="flex items-center">
-                  <span className="w-5 h-5 text-gold mr-3">📱</span>
+                {/* Contact Information */}
+                <div className="space-y-6">
                   <div>
-                    <p className="text-primary/60 text-sm">Phone</p>
-                    <p className="text-primary/90">{teamMembers[currentMemberIndex].phone}</p>
+                    <p className="text-white/60 text-sm font-medium mb-2">Email</p>
+                    <p className="text-white text-base">{teamMembers[currentMemberIndex].email}</p>
                   </div>
-                </div>
 
-                <div className="flex items-center">
-                  <span className="w-5 h-5 text-gold mr-3">📍</span>
                   <div>
-                    <p className="text-primary/60 text-sm">Location</p>
-                    <p className="text-primary/90">{teamMembers[currentMemberIndex].location}</p>
+                    <p className="text-white/60 text-sm font-medium mb-2">Phone</p>
+                    <p className="text-white text-base">{teamMembers[currentMemberIndex].phone}</p>
+                  </div>
+
+                  <div>
+                    <p className="text-white/60 text-sm font-medium mb-2">Contact Location</p>
+                    <p className="text-white text-base">{teamMembers[currentMemberIndex].location}</p>
                   </div>
                 </div>
               </div>
