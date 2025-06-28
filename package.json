@@ -3,23 +3,24 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start": "react-scripts start",
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "dev": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{js,jsx,css,md,json}\""
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "prop-types": "^15.8.1",
-    "react-router-dom": "6.0.2",
     "@dhiwise/component-tagger": "^1.0.9",
     "@tailwindcss/typography": "^0.5.16",
-    "react-scripts": "5.0.1"
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "6.0.2",
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "autoprefixer": "10.4.2",
     "postcss": "8.4.8",
     "prettier": "^3.5.3",

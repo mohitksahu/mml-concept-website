@@ -3,67 +3,16 @@ import '../../styles/Navbar.css';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
-    const [activeSection, setActiveSection] = useState('');
+    const [activeSection, setActiveSection] = useState('services');
+    const [hasAnimated, setHasAnimated] = useState(false);
 
-    // Handle scroll effect, visibility, and active section detection
+    // Trigger navbar entrance animation on component mount
     useEffect(() => {
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-
-            // Update scrolled state
-            setIsScrolled(currentScrollY > 50);
-
-            // Smart visibility based on scroll direction
-            if (currentScrollY < 10) {
-                // Always show navbar at top
-                setIsVisible(true);
-            } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                // Scrolling down - hide navbar
-                setIsVisible(false);
-                // Close mobile menu if open while scrolling down
-                if (isMobileMenuOpen) {
-                    setIsMobileMenuOpen(false);
-                }
-            } else if (currentScrollY < lastScrollY) {
-                // Scrolling up - show navbar
-                setIsVisible(true);
-            }
-
-            // Active section detection
-            const sections = [
-                { id: 'hero-section', name: 'services' },
-                { id: 'team-section', name: 'testimonial' },
-                { id: 'pricing-section', name: 'pricing' },
-                { id: 'contact-form', name: 'join-us' }
-            ];
-
-            const navbarHeight = isScrolled ? 52 : 60;
-            const scrollPosition = currentScrollY + navbarHeight + 100;
-
-            for (let i = sections.length - 1; i >= 0; i--) {
-                const element = document.getElementById(sections[i].id);
-                if (element && element.offsetTop <= scrollPosition) {
-                    setActiveSection(sections[i].name);
-                    break;
-                }
-            }
-
-            // Default to first section if at very top
-            if (currentScrollY < 100) {
-                setActiveSection('services');
-            }
-
-            setLastScrollY(currentScrollY);
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [lastScrollY, isMobileMenuOpen, isScrolled]);
-
-    // Handle click outside to close mobile menu
+        const timer = setTimeout(() => {
+            setHasAnimated(true);
+        }, 200);
+        return () => clearTimeout(timer);
+    }, []);// Handle click outside to close mobile menu
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (isMobileMenuOpen && !event.target.closest('.navbar-nav') && !event.target.closest('.mobile-menu-btn')) {
@@ -101,13 +50,11 @@ const Navbar = () => {
             'services': 'hero-section',
             'pricing': 'pricing-section',
             'join-us': 'contact-form'
-        };
-
-        const targetId = sectionMap[section];
+        }; const targetId = sectionMap[section];
         if (targetId) {
             const element = document.getElementById(targetId);
             if (element) {
-                const navbarHeight = isScrolled ? 80 : 137;
+                const navbarHeight = 100; // Fixed navbar height since no scrolled state
                 const offsetTop = element.offsetTop - navbarHeight - 20;
 
                 window.scrollTo({
@@ -118,52 +65,54 @@ const Navbar = () => {
         }
     }; return (
         <header
-            className={`navbar-container bg-primary ${isScrolled ? 'navbar-scrolled' : ''} ${isVisible ? 'navbar-visible' : 'navbar-hidden'} ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
+            className={`navbar-container bg-primary ${isMobileMenuOpen ? 'mobile-menu-open' : ''} transition-all duration-1000 ease-out ${hasAnimated ? 'opacity-100 transform-none' : 'opacity-0 -translate-y-full'}`}
             style={{
                 backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
+                transform: hasAnimated ? 'translateY(0)' : 'translateY(-100%)',
+                transformOrigin: 'top center'
             }}
         >
-            <div className="navbar-layout">                {/* Logo */}
-                <div className="navbar-logo-container">
+            <div className="navbar-layout">
+
+                {/* Logo */}
+                <div className={`navbar-logo-container transition-all duration-800 delay-500 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-90'}`}>
                     <img
                         src="/images/_61d44619-0afc-4863-a3a6-e228820af569.jpeg.png"
                         alt="Company Logo"
                         className="navbar-logo"
                     />
-                </div>
-
-                {/* Mobile Menu Button */}
+                </div>                {/* Mobile Menu Button */}
                 <button
-                    className="mobile-menu-btn"
+                    className={`mobile-menu-btn transition-all duration-800 delay-700 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-90'}`}
                     onClick={toggleMobileMenu}
                     aria-label="Toggle mobile menu"
                 >
                     <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
                     <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
                     <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
-                </button>                {/* Navigation */}
-                <nav className={`navbar-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+                </button>
+
+                {/* Navigation */}
+                <nav className={`navbar-nav ${isMobileMenuOpen ? 'mobile-open' : ''} transition-all duration-800 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
                     <button
-                        className={`navbar-btn ${activeSection === 'testimonial' ? 'active' : ''}`}
+                        className={`navbar-btn ${activeSection === 'testimonial' ? 'active' : ''} transition-all duration-600 delay-800 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
                         onClick={() => handleNavClick('testimonial')}
                     >
                         Testimonial
                     </button>
                     <button
-                        className={`navbar-btn ${activeSection === 'services' ? 'active' : ''}`}
+                        className={`navbar-btn ${activeSection === 'services' ? 'active' : ''} transition-all duration-600 delay-900 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
                         onClick={() => handleNavClick('services')}
                     >
                         Services
                     </button>
                     <button
-                        className={`navbar-btn ${activeSection === 'pricing' ? 'active' : ''}`}
+                        className={`navbar-btn ${activeSection === 'pricing' ? 'active' : ''} transition-all duration-600 delay-1000 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
                         onClick={() => handleNavClick('pricing')}
                     >
                         Pricing
-                    </button>
-
-                    <div className="join-us-container">
+                    </button>                    <div className={`join-us-container transition-all duration-600 delay-1100 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95'}`}>
                         <div className="join-us-shadow"></div>
                         <button
                             className={`join-us-btn ${activeSection === 'join-us' ? 'active' : ''}`}

@@ -16,3 +16,162 @@ body {
 *::after {
   box-sizing: inherit;
 }
+
+/* Carousel Animations */
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Additional entrance animations */
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Slow pop-up animation for carousel container */
+@keyframes slowPopUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(0.95) translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6), 0 0 30px rgba(212, 175, 55, 0.4);
+  }
+}
+
+/* Animation utility class */
+.animate-slowPopUp {
+  animation: slowPopUp 1.4s ease-out both;
+}
+
+/* Carousel container smooth transitions */
+.carousel-container {
+  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Enhanced hover effects for carousel images */
+.carousel-image-wrapper {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-image-wrapper:hover {
+  transform: translateY(-5px) scale(1.02);
+  filter: brightness(1.1) saturate(1.1);
+}
+
+/* Video carousel specific styles */
+.carousel-video-wrapper {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-video-wrapper:hover {
+  transform: translateY(-3px) scale(1.01);
+  filter: brightness(1.05) saturate(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-video-wrapper video {
+  transition: all 0.3s ease;
+}
+
+.carousel-video-wrapper:hover video {
+  filter: brightness(1.1);
+}
+
+/* Smooth indicator transitions */
+.carousel-indicator {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-indicator:hover {
+  transform: scale(1.2);
+}
+
+/* Navbar entrance animation enhancement */
+.navbar-container {
+  animation: fadeInDown 1.2s ease-out;
+}
+
+/* Hero section background subtle animation */
+.hero-background {
+  animation: fadeInScale 1.8s ease-out;
+}
+
+/* Add subtle glow to gold elements on entrance */
+/* .text-gold {
+  animation: glow 2s ease-in-out 1.5s;
+} */
+
+.bg-gold {
+  animation: glow 2s ease-in-out 2s;
+}
