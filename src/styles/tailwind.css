@@ -11,7 +11,7 @@
     --bg-card: #1e1e1e;
     --bg-card-hover: #1e1e1e9e;
     --bg-accent: #1f1f1f;
-    --bg-gold: #979546;
+    --bg-gold: #a28037;
 
     /* Text Colors */
     --text-primary: #ffffff;
@@ -20,25 +20,32 @@
 }
 
 @layer utilities {
+
   /* Background Colors */
   .bg-primary {
     background-color: var(--bg-primary);
   }
+
   .bg-secondary {
     background-color: var(--bg-secondary);
   }
+
   .bg-overlay {
     background-color: var(--bg-overlay);
   }
+
   .bg-card {
     background-color: var(--bg-card);
   }
+
   .bg-card-hover {
     background-color: var(--bg-card-hover);
   }
+
   .bg-accent {
     background-color: var(--bg-accent);
   }
+
   .bg-gold {
     background-color: var(--bg-gold);
   }
@@ -47,7 +54,12 @@
   .text-primary {
     color: var(--text-primary);
   }
+
   .text-secondary {
     color: var(--text-secondary);
+  }
+
+  .text-gold {
+    color: var(--bg-gold);
   }
 }
