@@ -76,7 +76,7 @@ const Navbar = () => {
             <div className="navbar-layout">
 
                 {/* Logo */}
-                <div className={`navbar-logo-container transition-all duration-800 delay-500 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-90'}`}>
+                <div className="navbar-logo-container">
                     <img
                         src="/images/_61d44619-0afc-4863-a3a6-e228820af569.jpeg.png"
                         alt="Company Logo"

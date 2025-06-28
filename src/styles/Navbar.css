@@ -61,26 +61,15 @@
     top: 50%;
     transform: translateY(-50%);
     margin: 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
+    cursor: default;
     z-index: 10;
-}
-
-.navbar-logo-container:hover {
-    transform: translateY(-50%) scale(1.05) rotate(2deg);
 }
 
 .navbar-logo {
     width: 75px;
     height: 75px;
     object-fit: contain;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-}
-
-.navbar-logo:hover {
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3)) brightness(1.1);
-    transform: scale(1.02);
 }
 
 .navbar-container.navbar-scrolled .navbar-logo {
@@ -885,27 +874,8 @@ body {
     }
 }
 
-/* ===== LOGO PULSE ANIMATION ON NAVBAR APPEARANCE ===== */
-@keyframes logoPulse {
-    0% {
-        transform: translateY(-50%) scale(1);
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-    }
-
-    50% {
-        transform: translateY(-50%) scale(1.08);
-        filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.3)) brightness(1.15);
-    }
-
-    100% {
-        transform: translateY(-50%) scale(1);
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-    }
-}
-
-.navbar-container.navbar-visible .navbar-logo-container {
-    animation: logoPulse 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-}
+/* ===== LOGO PULSE ANIMATION REMOVED ===== */
+/* Logo animations have been removed as requested */
 
 /* ===== TEXT SHIMMER EFFECT ON NAVBAR BUTTON HOVER ===== */
 .navbar-btn .shimmer {
