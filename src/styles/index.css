@@ -259,3 +259,43 @@ body {
 .pulse-gold {
   animation: pulse-gold 2s infinite;
 }
+
+/* Team Section Animations */
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-2deg);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05) rotate(1deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-slideUpFade {
+  animation: slideUpFade 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale 1s ease-out forwards;
+  opacity: 0;
+}
