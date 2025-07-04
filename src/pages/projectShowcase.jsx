@@ -57,6 +57,7 @@ const ProjectShowcase = () => {
 
   return (
     <section
+      id="project-showcase"
       className="relative py-16 md:py-24 overflow-hidden"
       style={{
         backgroundImage: "url('/images/img_image_18.png')",

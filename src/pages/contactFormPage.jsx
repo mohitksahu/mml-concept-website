@@ -10,12 +10,14 @@ const ContactFormPage = () => {
     };
 
     return (
-        <ContactForm
-            showTitle={true}
-            title="Leave a message"
-            onSubmit={handleFormSubmit}
-            showWatermark={false}
-        />
+        <div id="contact-form">
+            <ContactForm
+                showTitle={true}
+                title="Leave a message"
+                onSubmit={handleFormSubmit}
+                showWatermark={false}
+            />
+        </div>
     );
 };
 

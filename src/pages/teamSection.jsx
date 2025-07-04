@@ -16,6 +16,22 @@ const TeamSection = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Listen for custom event to switch to testimony tab
+  useEffect(() => {
+    const handleSwitchToTestimony = () => {
+      console.log('Received switchToTestimony event, switching to testimony tab');
+      setActiveTab('testimony');
+    };
+
+    window.addEventListener('switchToTestimony', handleSwitchToTestimony);
+    console.log('Event listener for switchToTestimony added');
+
+    return () => {
+      window.removeEventListener('switchToTestimony', handleSwitchToTestimony);
+      console.log('Event listener for switchToTestimony removed');
+    };
+  }, []);
+
   // Team members data for MML Concepts
   const teamMembers = [
     {
@@ -263,7 +279,7 @@ const TeamSection = () => {
       </div>
 
       {/* About Section with Watermark Design */}
-      <div className={`relative min-h-screen flex items-center transition-all duration-1000 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      <div id="about-section" className={`relative min-h-screen flex items-center transition-all duration-1000 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         style={{ backgroundColor: '#000000' }}>
 
         {/* Large Watermark Logo Background */}
@@ -292,7 +308,7 @@ const TeamSection = () => {
 
         <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-6 py-16 md:py-20 lg:py-24">
           {/* Navigation Tabs */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-16">
+          <div id="testimonial-tabs" className="flex flex-wrap justify-center gap-2 md:gap-4 mb-16">
             {Object.keys(tabData).map((tab) => (
               <button
                 key={tab}

@@ -4,7 +4,7 @@ import '../styles/navbar.css';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [activeSection, setActiveSection] = useState('services');
+    const [activeSection, setActiveSection] = useState(''); // Changed from 'services' to empty string
     const [hasAnimated, setHasAnimated] = useState(false);
     const location = useLocation();
 
@@ -14,7 +14,14 @@ const Navbar = () => {
             setHasAnimated(true);
         }, 200);
         return () => clearTimeout(timer);
-    }, []);// Handle click outside to close mobile menu
+    }, []);
+
+    // Clear active section when navigating away from home page
+    useEffect(() => {
+        if (location.pathname !== '/') {
+            setActiveSection('');
+        }
+    }, [location.pathname]);// Handle click outside to close mobile menu
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (isMobileMenuOpen && !event.target.closest('.navbar-nav') && !event.target.closest('.mobile-menu-btn')) {
@@ -46,25 +53,33 @@ const Navbar = () => {
         // Close mobile menu when nav item is clicked
         setIsMobileMenuOpen(false);
 
+        // Set active section
+        setActiveSection(section);
+
         // Only scroll to section if we're on the home page
         if (location.pathname === '/') {
             const sectionMap = {
-                'testimonial': 'team-section', // Assuming testimonials are in team section
-                'services': 'hero-section',
-                'join-us': 'contact-form'
+                'testimonial': 'team-section', // Navigate to the Meet Our Team section
+                'services': 'project-showcase', // Services should go to project showcase
+                'join-us': 'contact-form' // Join us should go to contact form
             };
 
             const targetId = sectionMap[section];
             if (targetId) {
                 const element = document.getElementById(targetId);
                 if (element) {
-                    const navbarHeight = 100; // Fixed navbar height since no scrolled state
-                    const offsetTop = element.offsetTop - navbarHeight - 20;
+                    // Adjust scroll offset based on section type
+                    let navbarHeight = 100; // Fixed navbar height
+                    let additionalOffset = 20; // Default additional offset
+
+                    const offsetTop = element.offsetTop - navbarHeight - additionalOffset;
 
                     window.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
                     });
+                } else {
+                    console.warn(`Element with ID '${targetId}' not found`);
                 }
             }
         }
