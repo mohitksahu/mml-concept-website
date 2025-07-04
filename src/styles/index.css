@@ -131,6 +131,40 @@ body {
   filter: brightness(1.1) saturate(1.1);
 }
 
+/* Enhanced smooth carousel transitions for better slide effect */
+.carousel-track {
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* Optimized video carousel wrapper for smooth sliding */
+.carousel-video-wrapper {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, filter;
+}
+
+.carousel-video-wrapper:hover {
+  transform: translateY(-3px) scale(1.01);
+  filter: brightness(1.05) saturate(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-video-wrapper video {
+  transition: all 0.3s ease;
+  will-change: filter;
+}
+
+.carousel-video-wrapper:hover video {
+  filter: brightness(1.1);
+}
+
+/* Smooth carousel container for better performance */
+.carousel-smooth {
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
 /* Video carousel specific styles */
 .carousel-video-wrapper {
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
