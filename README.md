@@ -1,6 +1,6 @@
-# React + Vite + Tailwind CSS Project
+# MML Concept - React Website
 
-A modern React-based project utilizing the latest frontend technologies and tools for building responsive web applications.
+A modern React-based website for MML Concept utilizing the latest frontend technologies and tools for building responsive web applications.
 
 ## 🚀 Features
 
