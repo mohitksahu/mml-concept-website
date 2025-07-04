@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Navbar.css';
+import { Link, useLocation } from 'react-router-dom';
+import '../styles/navbar.css';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('services');
     const [hasAnimated, setHasAnimated] = useState(false);
+    const location = useLocation();
 
     // Trigger navbar entrance animation on component mount
     useEffect(() => {
@@ -44,22 +46,26 @@ const Navbar = () => {
         // Close mobile menu when nav item is clicked
         setIsMobileMenuOpen(false);
 
-        // Scroll to section functionality
-        const sectionMap = {
-            'testimonial': 'team-section', // Assuming testimonials are in team section
-            'services': 'hero-section',
-            'join-us': 'contact-form'
-        }; const targetId = sectionMap[section];
-        if (targetId) {
-            const element = document.getElementById(targetId);
-            if (element) {
-                const navbarHeight = 100; // Fixed navbar height since no scrolled state
-                const offsetTop = element.offsetTop - navbarHeight - 20;
+        // Only scroll to section if we're on the home page
+        if (location.pathname === '/') {
+            const sectionMap = {
+                'testimonial': 'team-section', // Assuming testimonials are in team section
+                'services': 'hero-section',
+                'join-us': 'contact-form'
+            };
 
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
+            const targetId = sectionMap[section];
+            if (targetId) {
+                const element = document.getElementById(targetId);
+                if (element) {
+                    const navbarHeight = 100; // Fixed navbar height since no scrolled state
+                    const offsetTop = element.offsetTop - navbarHeight - 20;
+
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
             }
         }
     }; return (
@@ -76,11 +82,13 @@ const Navbar = () => {
 
                 {/* Logo */}
                 <div className="navbar-logo-container">
-                    <img
-                        src="/images/_61d44619-0afc-4863-a3a6-e228820af569.jpeg.png"
-                        alt="Company Logo"
-                        className="navbar-logo"
-                    />
+                    <Link to="/">
+                        <img
+                            src="/images/_61d44619-0afc-4863-a3a6-e228820af569.jpeg.png"
+                            alt="Company Logo"
+                            className="navbar-logo"
+                        />
+                    </Link>
                 </div>                {/* Mobile Menu Button */}
                 <button
                     className={`mobile-menu-btn transition-all duration-800 delay-700 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-90'}`}
@@ -94,25 +102,56 @@ const Navbar = () => {
 
                 {/* Navigation */}
                 <nav className={`navbar-nav ${isMobileMenuOpen ? 'mobile-open' : ''} transition-all duration-800 delay-600 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-                    <button
-                        className={`navbar-btn ${activeSection === 'testimonial' ? 'active' : ''} transition-all duration-600 delay-800 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
-                        onClick={() => handleNavClick('testimonial')}
-                    >
-                        Testimonial
-                    </button>
-                    <button
-                        className={`navbar-btn ${activeSection === 'services' ? 'active' : ''} transition-all duration-600 delay-900 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
-                        onClick={() => handleNavClick('services')}
-                    >
-                        Services
-                    </button>                    <div className={`join-us-container transition-all duration-600 delay-1000 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95'}`}>
-                        <div className="join-us-shadow"></div>
+                    {location.pathname === '/' ? (
                         <button
-                            className={`join-us-btn ${activeSection === 'join-us' ? 'active' : ''}`}
-                            onClick={() => handleNavClick('join-us')}
+                            className={`navbar-btn ${activeSection === 'testimonial' ? 'active' : ''} transition-all duration-600 delay-800 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
+                            onClick={() => handleNavClick('testimonial')}
                         >
-                            Join Us
+                            Testimonial
                         </button>
+                    ) : (
+                        <Link
+                            to="/"
+                            className={`navbar-btn transition-all duration-600 delay-800 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            Home
+                        </Link>
+                    )}
+                    {location.pathname === '/' ? (
+                        <button
+                            className={`navbar-btn ${activeSection === 'services' ? 'active' : ''} transition-all duration-600 delay-900 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
+                            onClick={() => handleNavClick('services')}
+                        >
+                            Services
+                        </button>
+                    ) : (
+                        <Link
+                            to="/"
+                            className={`navbar-btn transition-all duration-600 delay-900 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-3'}`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            Services
+                        </Link>
+                    )}
+                    <div className={`join-us-container transition-all duration-600 delay-1000 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-3 scale-95'}`}>
+                        <div className="join-us-shadow"></div>
+                        {location.pathname === '/' ? (
+                            <button
+                                className={`join-us-btn ${activeSection === 'join-us' ? 'active' : ''}`}
+                                onClick={() => handleNavClick('join-us')}
+                            >
+                                Join Us
+                            </button>
+                        ) : (
+                            <Link
+                                to="/contact"
+                                className={`join-us-btn ${location.pathname === '/contact' ? 'active' : ''}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                Contact
+                            </Link>
+                        )}
                     </div>
                 </nav>
             </div>

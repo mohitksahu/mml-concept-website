@@ -4,6 +4,49 @@ const HeroSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [videoLoadErrors, setVideoLoadErrors] = useState({});
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
+
+  // Handle touch start
+  const handleTouchStart = (e) => {
+    setTouchEnd(0); // Reset touch end
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  // Handle touch move
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  // Handle touch end
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      setCurrentIndex((prev) => (prev + 1) % portfolioVideos.length);
+    } else if (isRightSwipe) {
+      setCurrentIndex((prev) => (prev - 1 + portfolioVideos.length) % portfolioVideos.length);
+    }
+  };
+
+  // Handle video loading errors
+  const handleVideoError = (index, error) => {
+    console.error(`Video ${index + 1} loading error:`, error);
+    setVideoLoadErrors(prev => ({ ...prev, [index]: true }));
+  };
+
+  const handleVideoLoad = (index) => {
+    console.log(`Video ${index + 1} loaded successfully`);
+    setVideoLoadErrors(prev => ({ ...prev, [index]: false }));
+  };
 
   // Portfolio videos for the sliding carousel
   const portfolioVideos = [
@@ -14,32 +57,25 @@ const HeroSection = () => {
     "/MML/clip5_home.mp4"
   ];
 
-  // Auto-slide every 3 seconds (pause on hover, wait for initial animation)
+  // Auto-slide every 4 seconds (pause on hover, wait for initial animation)
   useEffect(() => {
     let slideInterval;
 
-    if (!isHovered) {
-      // Wait for initial animation, then start sliding
-      const delay = hasAnimated ? 0 : 2900; // Wait for pop-up animation + 1 second
-
-      const startSliding = () => {
-        slideInterval = setInterval(() => {
-          setCurrentIndex((prevIndex) => (prevIndex + 1) % portfolioVideos.length);
-        }, 3000);
-      };
-
-      if (delay > 0) {
-        const timer = setTimeout(startSliding, delay);
-        return () => {
-          clearTimeout(timer);
-          clearInterval(slideInterval);
-        };
-      } else {
-        startSliding();
-      }
+    if (!isHovered && hasAnimated) {
+      slideInterval = setInterval(() => {
+        setCurrentIndex((prevIndex) => {
+          const nextIndex = (prevIndex + 1) % portfolioVideos.length;
+          console.log(`Auto-sliding from video ${prevIndex + 1} to video ${nextIndex + 1}`);
+          return nextIndex;
+        });
+      }, 4000); // Increased to 4 seconds for better UX
     }
 
-    return () => clearInterval(slideInterval);
+    return () => {
+      if (slideInterval) {
+        clearInterval(slideInterval);
+      }
+    };
   }, [portfolioVideos.length, isHovered, hasAnimated]);
 
   // Trigger animations on component mount
@@ -49,6 +85,20 @@ const HeroSection = () => {
     }, 100);
     return () => clearTimeout(timer);
   }, []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        setCurrentIndex((prev) => (prev - 1 + portfolioVideos.length) % portfolioVideos.length);
+      } else if (event.key === 'ArrowRight') {
+        setCurrentIndex((prev) => (prev + 1) % portfolioVideos.length);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [portfolioVideos.length]);
 
   return (<section className="relative bg-secondary shadow-[4px_168px_250px_#0000003f] py-24 md:py-32 lg:py-36 min-h-[85vh] flex items-center">
     <div className="max-w-7xl mx-auto px-4 md:px-6 w-full">      {/* Header Tagline */}
@@ -64,38 +114,77 @@ const HeroSection = () => {
         className={`relative mb-12 md:mb-16 w-full`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <div className={`w-full px-4 md:px-8 ${hasAnimated ? 'animate-slowPopUp' : 'opacity-0'}`} style={{ animationDuration: '1.4s', animationDelay: '500ms', animationFillMode: 'both' }}>
-          {/* Carousel Container - Always shows 3 videos */}
+          {/* Carousel Container - Shows 3 videos, slides one at a time */}
           <div className="relative overflow-hidden max-w-6xl mx-auto">
-            <div className="grid grid-cols-3 gap-4 md:gap-6">
-              {[0, 1, 2].map((offset) => {
-                const videoIndex = (currentIndex + offset) % portfolioVideos.length;
-                return (
-                  <div
-                    key={`${currentIndex}-${offset}`}
-                    className="carousel-video-item"
-                  >
-                    <div className="w-full">
-                      <div className="w-full aspect-video overflow-hidden shadow-xl rounded-lg bg-gray-900 transition-all duration-700 ease-in-out">
-                        <video
-                          src={portfolioVideos[videoIndex]}
-                          className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          preload="metadata"
-                          onError={(e) => console.error('Video loading error:', e)}
-                          onLoadedData={() => console.log('Video loaded successfully')}
-                          style={{ backgroundColor: '#1c1c1c' }}
-                        />
-                      </div>
+            {/* Carousel Track */}
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{
+                transform: `translateX(-${currentIndex * (100 / 3)}%)`,
+                width: `${portfolioVideos.length * (100 / 3)}%`
+              }}
+            >
+              {portfolioVideos.map((video, index) => (
+                <div
+                  key={index}
+                  className="carousel-video-item flex-shrink-0"
+                  style={{ width: `${100 / portfolioVideos.length}%` }}
+                >
+                  <div className="w-full px-2 md:px-3">
+                    <div className="w-full aspect-video overflow-hidden shadow-xl rounded-lg bg-gray-900 transition-all duration-300 hover:shadow-2xl relative">
+                      <video
+                        src={video}
+                        className="w-full h-full object-cover transition-all duration-300 hover:scale-105"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="metadata"
+                        onError={(e) => handleVideoError(index, e)}
+                        onLoadedData={() => handleVideoLoad(index)}
+                        style={{ backgroundColor: '#1c1c1c' }}
+                      />
+                      {videoLoadErrors[index] && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-800 text-white">
+                          <div className="text-center">
+                            <svg className="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <p className="text-sm">Video unavailable</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
+
+            {/* Navigation Arrows */}
+            <button
+              onClick={() => setCurrentIndex((prev) => (prev - 1 + portfolioVideos.length) % portfolioVideos.length)}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 z-10"
+              aria-label="Previous video"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            <button
+              onClick={() => setCurrentIndex((prev) => (prev + 1) % portfolioVideos.length)}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 z-10"
+              aria-label="Next video"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>        {/* Carousel Indicators */}
         <div className={`flex justify-center mt-6 space-x-2 transition-opacity duration-1500 delay-1200 ${hasAnimated ? 'opacity-100' : 'opacity-0'}`}>
@@ -104,8 +193,8 @@ const HeroSection = () => {
               key={index}
               onClick={() => setCurrentIndex(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex
-                  ? 'bg-gold shadow-lg scale-110'
-                  : 'bg-primary/30 hover:bg-primary/50 hover:scale-105'
+                ? 'bg-gold shadow-lg scale-110'
+                : 'bg-primary/30 hover:bg-primary/50 hover:scale-105'
                 }`}
               aria-label={`Go to slide ${index + 1}`}
             />

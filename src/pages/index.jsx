@@ -4,7 +4,8 @@ import Footer from '../components/footer';
 import HeroSection from './home';
 import TeamSection from './teamSection';
 import ProjectShowcase from './projectShowcase';
-import ContactForm from './contactForm';
+import ComingSoonPage from './comingSoonPage';
+import ContactFormPage from './contactFormPage';
 
 const Portfolio = () => {
   return (
@@ -14,7 +15,8 @@ const Portfolio = () => {
         <HeroSection />
         <TeamSection />
         <ProjectShowcase />
-        <ContactForm />
+        <ComingSoonPage />
+        <ContactFormPage />
       </main>
       <Footer />
     </div>

@@ -1,5 +1,5 @@
 @import './tailwind.css';
-@import './Navbar.css';
+@import './navbar.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 body {
@@ -9,6 +9,8 @@ body {
   box-sizing: border-box;
   background-color: #010101;
   color: #ffffff;
+  overflow-x: hidden;
+  position: relative;
 }
 
 *,
@@ -298,4 +300,235 @@ body {
 .animate-fadeInScale {
   animation: fadeInScale 1s ease-out forwards;
   opacity: 0;
+}
+
+/* Contact Form Styling */
+.contact-form-container {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+}
+
+.contact-form-container .bg-card {
+  background: rgba(30, 30, 30, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-form-container input,
+.contact-form-container textarea,
+.contact-form-container button[type="button"] {
+  background: rgba(31, 31, 31, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-form-container input:focus,
+.contact-form-container textarea:focus,
+.contact-form-container button[type="button"]:focus {
+  background: rgba(31, 31, 31, 1);
+  border: 2px solid var(--bg-gold);
+  box-shadow: 0 0 0 3px rgba(162, 128, 55, 0.1);
+}
+
+.contact-form-container input::placeholder,
+.contact-form-container textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Dropdown styling */
+.contact-form-container .dropdown-container {
+  position: relative;
+  z-index: 1000;
+}
+
+.contact-form-container .dropdown-item:hover {
+  background: rgba(162, 128, 55, 0.1);
+  color: var(--bg-gold);
+}
+
+/* Enhanced dropdown menu styles */
+.contact-form-container .dropdown-container>div[role="listbox"] {
+  position: absolute !important;
+  z-index: 99999 !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin-top: 8px !important;
+  background-color: #1c1c1c !important;
+  border: 2px solid #a28037 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(162, 128, 55, 0.3) !important;
+  backdrop-filter: blur(10px) !important;
+  isolation: isolate !important;
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+}
+
+.contact-form-container .dropdown-container>div[role="listbox"] button {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 1rem !important;
+  width: 100% !important;
+  text-align: left !important;
+  font-weight: 500 !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+  border-bottom: 1px solid rgba(162, 128, 55, 0.3) !important;
+}
+
+.contact-form-container .dropdown-container>div[role="listbox"] button:hover {
+  background-color: #a28037 !important;
+  color: #000000 !important;
+}
+
+.contact-form-container .dropdown-container>div[role="listbox"] button:last-child {
+  border-bottom: none !important;
+}
+
+/* Image rendering improvements for contact form */
+.contact-form-container img,
+.contact-form-container [style*="background-image"] {
+  image-rendering: auto;
+  image-rendering: high-quality;
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure high-quality image scaling */
+.contact-form-container {
+  image-rendering: auto;
+  image-rendering: high-quality;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Prevent blur on transform and enable hardware acceleration */
+.contact-form-container * {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Smooth image transitions */
+.contact-form-container img {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Better rendering for background images */
+.contact-form-container [style*="background-image"] {
+  background-attachment: local;
+  background-repeat: no-repeat;
+  will-change: auto;
+}
+
+/* Contact Form Gradient Animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Enhanced Carousel Sliding Styles */
+.carousel-track {
+  display: flex;
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-slide {
+  flex: 0 0 33.333%;
+  max-width: 33.333%;
+  padding: 0 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .carousel-slide {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-slide {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* Carousel navigation buttons */
+.carousel-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-nav-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-nav-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(162, 128, 55, 0.5);
+}
+
+/* Responsive Carousel Styles */
+@media (max-width: 1024px) {
+  .carousel-video-item {
+    padding: 0 0.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-video-item {
+    padding: 0 0.125rem;
+  }
+
+  .carousel-nav-button {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-video-item {
+    padding: 0;
+  }
+
+  .carousel-nav-button {
+    padding: 0.4rem;
+  }
+}
+
+/* Smooth video loading states */
+.carousel-video-item video {
+  background-color: #1c1c1c;
+  min-height: 200px;
+}
+
+.carousel-video-item video:not([src]) {
+  background-image: linear-gradient(45deg, #1c1c1c 25%, transparent 25%),
+    linear-gradient(-45deg, #1c1c1c 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1c1c1c 75%),
+    linear-gradient(-45deg, transparent 75%, #1c1c1c 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }

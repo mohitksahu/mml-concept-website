@@ -20,16 +20,6 @@ const Footer = () => {
                   Team Organization
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-xl font-k2d font-light hover:text-gold transition-colors">
-                  Terms of use
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-xl font-k2d font-light hover:text-gold transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -39,17 +29,12 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-xl font-k2d hover:text-gold transition-colors">
-                  Join [name]
+                  Join MML Concepts
                 </a>
               </li>
               <li>
                 <a href="#" className="text-xl font-k2d hover:text-gold transition-colors">
                   Contribute Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-xl font-k2d hover:text-gold transition-colors">
-                  Submit Bug Reports
                 </a>
               </li>
             </ul>
@@ -71,12 +56,7 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-xl font-k2d hover:text-gold transition-colors">
-                  Twitter (x)
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-xl font-k2d hover:text-gold transition-colors">
-                  Facebook
+                  Youtube
                 </a>
               </li>
             </ul>
@@ -86,7 +66,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="text-center pt-8 border-t border-gray-700">
           <p className="text-base font-k2d">
-            © 2025 MML Concepts - Made with ❤️ from MML Tech Team
+            © 2025 MML Concepts - Made with ❤️ from Concepts Tech Team
           </p>
         </div>
       </div>

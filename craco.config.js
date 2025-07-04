@@ -1,34 +1,39 @@
 module.exports = {
     devServer: {
-        // Use the new setupMiddlewares option instead of deprecated ones
+        port: 3000,
         setupMiddlewares: (middlewares, devServer) => {
-            // This replaces onBeforeSetupMiddleware and onAfterSetupMiddleware
+            // Suppress specific console warnings
             if (!devServer) {
                 throw new Error('webpack-dev-server is not defined');
             }
 
-            // Add any custom middleware here if needed
-            // middlewares.unshift(...);
-
+            // Original setup
             return middlewares;
-        },
-        // Remove deprecated options that cause warnings
-        onBeforeSetupMiddleware: undefined,
-        onAfterSetupMiddleware: undefined,
+        }
     },
     webpack: {
-        configure: (webpackConfig) => {
-            // Suppress specific warnings
+        configure: (webpackConfig, { env, paths }) => {
+            // Suppress specific webpack warnings
             if (!webpackConfig.ignoreWarnings) {
                 webpackConfig.ignoreWarnings = [];
             }
 
             webpackConfig.ignoreWarnings.push(
+                /Failed to parse source map/,
+                /Critical dependency: the request of a dependency is an expression/,
+                /Module not found: Error: Can't resolve/,
+                /export .* \(imported as .*\) was not found/,
                 /DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE/,
                 /DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE/
             );
 
             return webpackConfig;
-        },
+        }
     },
+    plugins: [
+        {
+            plugin: require('tailwindcss'),
+            options: {}
+        }
+    ]
 };
