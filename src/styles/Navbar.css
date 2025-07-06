@@ -10,7 +10,7 @@
     right: 0;
     z-index: 1000;
     width: 100%;
-    height: 100px;
+    height: 120px; /* Increased height to accommodate larger logo */
     background: transparent;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -66,15 +66,16 @@
 }
 
 .navbar-logo {
-    width: 75px;
-    height: 75px;
+    width: 150px;
+    height: 150px;
     object-fit: contain;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    transition: all 0.3s ease;
 }
 
 .navbar-container.navbar-scrolled .navbar-logo {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
 }
 
 /* ===== NAVIGATION LINKS ===== */
@@ -554,8 +555,8 @@ body {
     }
 
     .navbar-logo {
-        width: 65px;
-        height: 65px;
+        width: 85px;
+        height: 85px;
     }
 
     .mobile-menu-btn {

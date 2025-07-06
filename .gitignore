@@ -30,4 +30,3 @@ jest-test-results.json
 build
 coverage
 node_modules
-public

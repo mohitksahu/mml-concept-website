@@ -99,7 +99,7 @@ const Navbar = () => {
                 <div className="navbar-logo-container">
                     <Link to="/">
                         <img
-                            src="/images/_61d44619-0afc-4863-a3a6-e228820af569.jpeg.png"
+                            src="/images/mmlconcepts_logo.png"
                             alt="Company Logo"
                             className="navbar-logo"
                         />

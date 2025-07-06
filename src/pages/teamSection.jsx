@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const TeamSection = () => {
   const [activeTab, setActiveTab] = useState('about');
@@ -39,10 +40,9 @@ const TeamSection = () => {
       name: "Arnesh Chakroborty",
       role: "Creative Director & Founder",
       bio: "Arnesh Chakroborty is the broke co-founder of MML Concepts. Yes, the only reason he pitched this idea was so he could somehow escape the “broke jail.” The sole purpose of this brand, for him, is a get-rich scheme. But every decision he makes for the brand proves exactly why he has been broke for so long. Having a production house to fulfill his random imaginations is something only the rich should consider—but a broke person like him? Truly ambitious.Finally, he is really broke. Please support.",
-      email: "tobeaddedsoon",
-      phone: "tobeaddedsoon",
-      location: "tobeaddedsoon",
       image: "/images/arnesh.jpg",
+      Instagram: "tobeaddedsoon",
+      Linkedin: "tobeaddedsoon",
       specialties: ["Creative Direction", "Video Production", "Brand Strategy"]
     },
     {
@@ -50,9 +50,8 @@ const TeamSection = () => {
       name: "Ayush Ankit",
       role: "Manager",
       bio: "Ayush is the honorary team member of MML Concepts—brought in not for any particular skill, but mostly out of pity and long-standing friendship with the co-founders. He’s not at the center of anything, really. In fact, no one’s entirely sure why he’s here or what he contributes, including him. Sometimes he shows up with ideas that derail the actual agenda, other times he just vibes in the group chat. But somehow, his presence adds that perfect dose of chaos and comic relief the team didn’t know it needed. He’s not qualified, not responsible, and definitely not necessary—but damn, we’re glad he’s around. Please support. He’s just here for the ride. ",
-      email: "tobeaddedsoon",
-      phone: "tobeaddedsoon",
-      location: "tobeaddedsoon",
+      Instagram: "tobeaddedsoon",
+      Linkedin: "tobeaddedsoon",
       image: "/images/ayush.jpg",
       specialties: ["Video Editing", "Motion Graphics", "Color Grading"]
     },
@@ -61,9 +60,8 @@ const TeamSection = () => {
       name: "Prajwal Pradipt Behera",
       role: "Founder & Graphic Designer",
       bio: "Prajwal Pradipt Behera is the other half of this beautifully chaotic duo—the co-founder of MML Concepts and the brand’s primary graphic designer. A lazy genius if there ever was one, Prajwal is the kind of guy who'll procrastinate on a poster for days, only to whip up a masterpiece in the final hour like it was nothing. His creative talent is undeniable, his adaptability unmatched, and his work ethic... well, let’s just say it arrives fashionably late. MML Concepts thrives on his designs, even if they sometimes arrive seconds before the deadline. He may not move fast, but when he does, it’s straight-up brilliance. Please support—he’s talented, tired, and probably still asleep.",
-      email: "tobeaddedsoon",
-      phone: "tobeaddedsoon",
-      location: "tobeaddedsoon",
+      Instagram: "tobeaddedsoon",
+      Linkedin: "tobeaddedsoon",
       image: "/images/prajwal.jpg",
       specialties: ["Client Relations", "Project Management", "Business Strategy"]
     }
@@ -234,22 +232,6 @@ const TeamSection = () => {
                     </span>
                   ))}
                 </div>
-
-                {/* Contact Info */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-base md:text-lg">
-                  <div className="text-center lg:text-left transform animate-slideUpFade" style={{ animationDelay: '600ms' }}>
-                    <p className="text-primary/60 mb-2 font-medium">Email</p>
-                    <p className="text-primary/90">{teamMembers[currentMemberIndex].email}</p>
-                  </div>
-                  <div className="text-center lg:text-left transform animate-slideUpFade" style={{ animationDelay: '700ms' }}>
-                    <p className="text-primary/60 mb-2 font-medium">Phone</p>
-                    <p className="text-primary/90">{teamMembers[currentMemberIndex].phone}</p>
-                  </div>
-                  <div className="text-center lg:text-left transform animate-slideUpFade" style={{ animationDelay: '800ms' }}>
-                    <p className="text-primary/60 mb-2 font-medium">Location</p>
-                    <p className="text-primary/90">{teamMembers[currentMemberIndex].location}</p>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -371,18 +353,13 @@ const TeamSection = () => {
                 {/* Contact Information */}
                 <div className="space-y-6">
                   <div>
-                    <p className="text-white/60 text-sm font-medium mb-2">Email</p>
-                    <p className="text-white text-base">{teamMembers[currentMemberIndex].email}</p>
+                    <p className="text-white/60 text-sm font-medium mb-2">LinkedIn</p>
+                    <p className="text-white text-base">{teamMembers[currentMemberIndex].Linkedin}</p>
                   </div>
 
                   <div>
-                    <p className="text-white/60 text-sm font-medium mb-2">Phone</p>
-                    <p className="text-white text-base">{teamMembers[currentMemberIndex].phone}</p>
-                  </div>
-
-                  <div>
-                    <p className="text-white/60 text-sm font-medium mb-2">Contact Location</p>
-                    <p className="text-white text-base">{teamMembers[currentMemberIndex].location}</p>
+                    <p className="text-white/60 text-sm font-medium mb-2">Instagram</p>
+                    <p className="text-white text-base">{teamMembers[currentMemberIndex].Instagram}</p>
                   </div>
                 </div>
               </div>
