@@ -269,13 +269,12 @@ const TeamSection = () => {
           <div className="relative w-full h-full flex items-center justify-center">
             {/* Image Logo Watermark */}
             <img
-              src="/images/watermarkLogo.png"
+              src="/images/mmlconcepts_logo_sym.png"
               alt="MML Concepts Logo Watermark"
-              className="w-auto h-[60vh] md:h-[70vh] lg:h-[80vh] max-w-[80vw] object-contain opacity-60 select-none pointer-events-none transition-all duration-500"
-              style={{ filter: `brightness(0.8) contrast(1.1)` }}
+              className="w-auto h-[70vh] md:h-[80vh] lg:h-[90vh] max-w-[90vw] object-contain opacity-10 select-none pointer-events-none transition-all duration-500"
+              style={{ filter: `brightness(0.9) contrast(1.2)` }}
               onError={(e) => {
-                // Fallback to text if image fails to load
-                console.log('Watermark image failed to load, showing fallback text');
+                // Fallback to text if image fails to load (silently)
                 e.target.style.display = 'none';
                 e.target.nextSibling.style.display = 'block';
               }}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { submitContactForm } from '../services/contactService';
 
 const ContactForm = ({
     showTitle = true,
@@ -10,13 +11,19 @@ const ContactForm = ({
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        subject: '',
+        phone: '',
+        subject: 'General Inquiry', // Default subject
         message: ''
     });
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formStatus, setFormStatus] = useState({
+        success: false,
+        error: null,
+        message: ''
+    });
 
     // Trigger animations on component mount
     useEffect(() => {
@@ -47,112 +54,56 @@ const ContactForm = ({
     };
 
     const handleSubjectSelect = (subject) => {
-        console.log('handleSubjectSelect called with:', subject);
         setFormData(prev => ({
             ...prev,
             subject: subject
         }));
         setIsDropdownOpen(false);
-        console.log('Dropdown closed, subject set to:', subject);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-
-        // Add timestamp to the form data
-        const formDataWithTimestamp = {
-            ...formData,
-            timestamp: new Date().toISOString(),
-            submissionId: Date.now().toString()
-        };
+        setFormStatus({
+            success: false,
+            error: null,
+            message: ''
+        });
 
         try {
-            // Save to localStorage for persistence
-            const existingSubmissions = JSON.parse(localStorage.getItem('contactFormSubmissions') || '[]');
-            existingSubmissions.push(formDataWithTimestamp);
-            localStorage.setItem('contactFormSubmissions', JSON.stringify(existingSubmissions));
-
-            // Create JSON file for download
-            const jsonData = JSON.stringify(formDataWithTimestamp, null, 2);
-            const blob = new Blob([jsonData], { type: 'application/json' });
-
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `contact-form-${formDataWithTimestamp.submissionId}.json`;
-
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            URL.revokeObjectURL(url);
-
-            // Log success
-            console.log('✅ Form submitted successfully!');
-            console.log('📋 Data saved to localStorage');
-            console.log('📝 Form data:', formDataWithTimestamp);
-            console.log('� Total submissions:', existingSubmissions.length);
-
-            // Show success message
-            alert('Message sent successfully! Your form data has been saved and downloaded.');
-
-            // Reset form
+            // Submit to MongoDB via API
+            const result = await submitContactForm(formData);
+            
+            setFormStatus({
+                success: true,
+                error: null,
+                message: 'Thank you! Your message has been sent successfully.'
+            });
+            
+            // Reset form after successful submission
             setFormData({
                 name: '',
                 email: '',
-                subject: '',
+                phone: '',
+                subject: 'General Inquiry',
                 message: ''
             });
-
+            
+            // If custom onSubmit handler is provided, call it
+            if (onSubmit) {
+                onSubmit(formData);
+            }
         } catch (error) {
-            console.error('❌ Error submitting form:', error);
-            alert('There was an error processing your message. Please try again.');
+            console.error('Form submission error:', error);
+            setFormStatus({
+                success: false,
+                error: error,
+                message: error.message || error.error || 'An error occurred. Please try again later.'
+            });
         } finally {
             setIsSubmitting(false);
         }
-
-        // If custom onSubmit is provided, call it
-        if (onSubmit) {
-            onSubmit(formDataWithTimestamp);
-        }
     };
-
-    // Utility function to export all saved submissions from localStorage
-    const exportAllSubmissions = () => {
-        try {
-            const existingSubmissions = JSON.parse(localStorage.getItem('contactFormSubmissions') || '[]');
-
-            if (existingSubmissions.length > 0) {
-                const jsonData = JSON.stringify(existingSubmissions, null, 2);
-                const blob = new Blob([jsonData], { type: 'application/json' });
-
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `all-contact-submissions-${new Date().toISOString().split('T')[0]}.json`;
-
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                URL.revokeObjectURL(url);
-
-                console.log('📁 All submissions exported:', `all-contact-submissions-${new Date().toISOString().split('T')[0]}.json`);
-                console.log('💾 Total submissions:', existingSubmissions.length);
-                alert(`Successfully exported ${existingSubmissions.length} submissions from localStorage.`);
-            } else {
-                console.log('📭 No submissions found to export');
-                alert('No submissions found in localStorage to export.');
-            }
-        } catch (error) {
-            console.error('Error exporting submissions:', error);
-            alert('Error exporting submissions. Please try again.');
-        }
-    };
-
-    // Make exportAllSubmissions available globally for debugging
-    window.exportContactSubmissions = exportAllSubmissions;
 
     return (
         <section className={`contact-form-container relative bg-secondary py-16 md:py-24 ${className}`}>
@@ -175,23 +126,32 @@ const ContactForm = ({
                 <div className={`relative max-w-4xl mx-auto transition-all duration-1000 delay-300 ${hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     <div className="relative rounded-xl p-8 md:p-12 shadow-2xl bg-card border border-primary/20" style={{ overflow: 'visible' }}>
                         {/* Logo as decorative element in corner */}
-                        <div className="absolute top-4 right-4 pointer-events-none z-10">
-                            <img
-                                src="/images/watermarkLogo.png"
-                                alt="Company Logo"
-                                className="w-16 h-16 object-contain opacity-40"
-                                style={{
-                                    filter: 'brightness(0.8) contrast(1.1)',
-                                    transform: 'translateZ(0)'
-                                }}
-                            />
-                        </div>
+                        {showWatermark && (
+                            <div className="absolute top-4 right-4 pointer-events-none z-10">
+                                <img
+                                    src="/images/watermarkLogo.png"
+                                    alt="Company Logo"
+                                    className="w-16 h-16 object-contain opacity-40"
+                                    style={{
+                                        filter: 'brightness(0.8) contrast(1.1)',
+                                        transform: 'translateZ(0)'
+                                    }}
+                                />
+                            </div>
+                        )}
 
                         {/* Subtle accent overlay */}
                         <div className="absolute inset-0 opacity-5 pointer-events-none z-0" style={{
                             backgroundImage: 'radial-gradient(circle at 30% 40%, var(--bg-gold) 0%, transparent 50%), radial-gradient(circle at 70% 60%, var(--bg-gold) 0%, transparent 50%)',
                             backgroundSize: '60% 60%'
                         }}></div>
+
+                        {/* Form Status Message */}
+                        {formStatus.message && (
+                            <div className={`mb-6 p-4 rounded-lg text-center ${formStatus.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                {formStatus.message}
+                            </div>
+                        )}
 
                         <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                             {/* Name and Email Row */}
@@ -226,49 +186,46 @@ const ContactForm = ({
                                 </div>
                             </div>
 
-                            {/* Subject */}
-                            <div style={{ position: 'relative', zIndex: 1000 }}>
-                                <label className="block text-lg font-inter font-medium text-primary mb-3">
-                                    Subject *
-                                </label>
-                                <div className="relative dropdown-container" style={{ zIndex: 1000, position: 'relative' }}>
+                            {/* Phone and Subject Row */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-lg font-inter font-medium text-primary mb-3">
+                                        Phone Number (Optional)
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleInputChange}
+                                        className="w-full h-12 bg-accent border border-primary/30 rounded-lg px-4 text-primary text-base font-inter placeholder-primary/60 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition-all duration-300"
+                                        placeholder="Enter your phone number"
+                                    />
+                                </div>
+                                
+                                {/* Subject Dropdown */}
+                                <div className="relative dropdown-container">
+                                    <label className="block text-lg font-inter font-medium text-primary mb-3">
+                                        Subject *
+                                    </label>
                                     <button
                                         type="button"
-                                        onClick={() => {
-                                            console.log('Dropdown clicked, current state:', isDropdownOpen);
-                                            setIsDropdownOpen(!isDropdownOpen);
-                                        }}
-                                        className="w-full h-12 bg-accent border border-primary/30 rounded-lg px-4 text-primary text-base font-inter text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition-all duration-300 hover:border-gold/50"
-                                        aria-expanded={isDropdownOpen}
-                                        aria-haspopup="listbox"
+                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        className="w-full h-12 bg-accent border border-primary/30 rounded-lg px-4 text-primary text-base font-inter focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold transition-all duration-300 flex items-center justify-between"
                                     >
-                                        <span className={formData.subject ? 'text-primary font-medium' : 'text-primary/70 font-normal'}>
-                                            {formData.subject || 'Select a Subject'}
-                                        </span>
-                                        <svg
-                                            className={`w-5 h-5 text-gold transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                        <span>{formData.subject || 'Select a subject'}</span>
+                                        <svg className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                                         </svg>
                                     </button>
+                                    
                                     {isDropdownOpen && (
-                                        <div
-                                            className="absolute top-full left-0 w-full bg-secondary border-2 border-gold rounded-lg mt-2 shadow-2xl"
+                                        <div 
+                                            className="absolute w-full bg-accent/95 backdrop-blur-md rounded-lg mt-2 shadow-xl z-50 border border-gold/30"
                                             style={{
-                                                zIndex: 99999,
-                                                backgroundColor: '#1c1c1c',
-                                                border: '2px solid #a28037',
-                                                position: 'absolute',
                                                 top: '100%',
                                                 left: 0,
                                                 right: 0,
-                                                marginTop: '8px',
-                                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(162, 128, 55, 0.3)',
-                                                backdropFilter: 'blur(10px)',
-                                                isolation: 'isolate'
+                                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(162, 128, 55, 0.3)'
                                             }}
                                             role="listbox"
                                         >
@@ -276,12 +233,7 @@ const ContactForm = ({
                                                 <button
                                                     key={subject}
                                                     type="button"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                        console.log('Subject selected:', subject);
-                                                        handleSubjectSelect(subject);
-                                                    }}
+                                                    onClick={() => handleSubjectSelect(subject)}
                                                     className="w-full px-4 py-4 text-left text-white font-medium text-base border-b border-gold/30 last:border-b-0 hover:bg-gold hover:text-black transition-all duration-200"
                                                     style={{
                                                         backgroundColor: 'transparent',

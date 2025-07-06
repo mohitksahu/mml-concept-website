@@ -45,7 +45,7 @@ const Footer = () => {
             <h3 className="text-xl font-bold font-k2d underline mb-4">Follow Us</h3>
             <ul className="space-y-2">
               <li>
-                <a href="https://www.instagram.com/mml.concepts/" className="text-xl font-k2d hover:text-gold transition-colors" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.linkedin.com/company/mml-concept/" className="text-xl font-k2d hover:text-gold transition-colors" target="_blank" rel="noopener noreferrer">
                   Linkedin
                 </a>
               </li>

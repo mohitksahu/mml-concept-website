@@ -66,16 +66,16 @@
 }
 
 .navbar-logo {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     object-fit: contain;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     transition: all 0.3s ease;
 }
 
 .navbar-container.navbar-scrolled .navbar-logo {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
 }
 
 /* ===== NAVIGATION LINKS ===== */

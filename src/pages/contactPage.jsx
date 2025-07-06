@@ -6,12 +6,8 @@ import ContactForm from '../components/contactForm';
 const ContactPage = () => {
     const handleFormSubmit = (formData) => {
         console.log('Contact form submitted:', formData);
-
-        // Here you can implement your custom form submission logic
-        // For example: send to email service, save to localStorage, etc.
-
-        // For now, we'll just show a success message
-        alert('Thank you for your message! We will get back to you soon.');
+        // Form submission is now handled by the ContactForm component
+        // This is just for any additional logging or processing
     };
 
     return (

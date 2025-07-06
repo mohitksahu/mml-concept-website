@@ -1,0 +1,8 @@
+{
+  "name": "mml-concepts-server",
+  "version": "1.0.0",
+  "description": "MML Concepts Backend Server",
+  "main": "server.js",
+  "private": true,
+  "type": "commonjs"
+}

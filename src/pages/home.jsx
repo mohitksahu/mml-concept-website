@@ -10,8 +10,7 @@ const HeroSection = () => {
     "/MML/clip1_home.mp4",
     "/MML/clip2_home.mp4",
     "/MML/clip3_home.mp4",
-    "/MML/clip4_home.mp4",
-    "/MML/clip5_home.mp4"
+    "/MML/clip4_home.mp4"
   ];
 
   // Auto-slide to the left every 3 seconds (pause on hover, wait for initial animation)
@@ -58,6 +57,8 @@ const HeroSection = () => {
     return videos;
   };
 
+  // No additional video loading logic
+
   return (
     <section className="relative bg-secondary shadow-[4px_168px_250px_#0000003f] py-24 md:py-32 lg:py-36 min-h-[85vh] flex items-center">
       <div className="max-w-7xl mx-auto px-4 md:px-6 w-full">
@@ -90,8 +91,6 @@ const HeroSection = () => {
                       muted
                       playsInline
                       preload="metadata"
-                      onError={(e) => console.error('Video loading error:', e)}
-                      onLoadedData={() => console.log('Video loaded successfully')}
                       style={{ backgroundColor: '#1c1c1c' }}
                     />
                   </div>
