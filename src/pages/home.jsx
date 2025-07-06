@@ -68,7 +68,7 @@ const HeroSection = () => {
             Professional Solutions by <span className="text-gold font-semibold">MML Concepts</span>
           </p>
           <h1 className={`text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gold leading-tight transition-opacity duration-2000 delay-400 ${hasAnimated ? 'opacity-100' : 'opacity-0'}`}>
-            Not Just a Business Solution!
+            We dont just CREATE!
           </h1>
         </div>
 

@@ -12,7 +12,8 @@
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{js,jsx,css,md,json}\"",
     "prod": "cross-env NODE_ENV=production node server.js",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "@dhiwise/component-tagger": "^1.0.9",
