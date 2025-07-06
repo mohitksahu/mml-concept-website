@@ -19,14 +19,19 @@
    - Import the GitHub repository
    - Configure your project settings:
      - Framework Preset: Other
-     - Build Command: `npm run vercel-build`
+     - Build Command: `CI=false && npm run vercel-build`
      - Output Directory: `build`
      - Install Command: `npm install`
 
 3. **Environment Variables**
-   - Add the same environment variables as in your `.env` file
-   - Make sure to add your MongoDB connection string (`MONGO_URI`)
-   - Set `NODE_ENV` to `production`
+   - Add the following environment variables:
+     ```
+     NODE_ENV=production
+     MONGODB_URI=mongodb+srv://prajwalpb123:VjiJp1bY0HHc6hcj@mmlconcepts0.n6ub92r.mongodb.net/
+     PORT=3000
+     ```
+   - Make sure the MongoDB connection string is correct
+   - Ensure `NODE_ENV` is set to `production`
 
 4. **Deploy**
    - Click "Deploy"
@@ -62,3 +67,7 @@ vercel
 - If you encounter any issues, check the Vercel logs
 - Ensure your MongoDB connection string is correct
 - Verify that your environment variables are set correctly
+- If you see build errors related to warnings, make sure CI=false is set in your build command
+- Check for any ESLint or TypeScript errors that might be failing the build
+- Make sure your MongoDB Atlas IP whitelist allows connections from Vercel's servers (0.0.0.0/0)
+- Verify the API endpoints are correctly routed in vercel.json

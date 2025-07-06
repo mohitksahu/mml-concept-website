@@ -3,17 +3,17 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "start": "set PORT=3000 && react-scripts start",
+    "start": "react-scripts start",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
     "dev": "concurrently \"npm run server-dev\" \"npm run start\"",
-    "build": "react-scripts build",
+    "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{js,jsx,css,md,json}\"",
     "prod": "cross-env NODE_ENV=production node server.js",
     "heroku-postbuild": "npm run build",
-    "vercel-build": "npm run build"
+    "vercel-build": "CI=false && npm run build"
   },
   "dependencies": {
     "@dhiwise/component-tagger": "^1.0.9",

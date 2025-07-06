@@ -17,6 +17,17 @@ module.exports = {
             if (!webpackConfig.ignoreWarnings) {
                 webpackConfig.ignoreWarnings = [];
             }
+            
+            // Add ignores for Vercel deployment warnings
+            webpackConfig.ignoreWarnings.push(
+                function ignoreSourcemapsloaderWarnings(warning) {
+                    return (
+                        warning.module &&
+                        warning.module.resource &&
+                        warning.module.resource.includes('node_modules')
+                    );
+                }
+            );
 
             webpackConfig.ignoreWarnings.push(
                 /Failed to parse source map/,
