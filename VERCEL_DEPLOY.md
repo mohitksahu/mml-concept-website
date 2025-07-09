@@ -71,3 +71,29 @@ vercel
 - Check for any ESLint or TypeScript errors that might be failing the build
 - Make sure your MongoDB Atlas IP whitelist allows connections from Vercel's servers (0.0.0.0/0)
 - Verify the API endpoints are correctly routed in vercel.json
+
+### Common Build Issues
+
+#### NPM Warning Messages
+If you see output like this, it's not an error but normal npm information:
+```
+added 1460 packages in 1m
+284 packages are looking for funding
+  run `npm fund` for details
+npm notice
+npm notice New major version of npm available! 10.9.2 -> 11.4.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.4.2
+npm notice To update run: npm install -g npm@11.4.2
+npm notice
+```
+
+#### Module Not Found Errors
+If you see an error like `Module not found: Error: Can't resolve './app' in '/vercel/path0/src'`, it means there's a case sensitivity issue or file extension problem in your imports. We've fixed these by:
+- Making sure imports use the correct file extensions (e.g., `import App from './app.jsx'` instead of `import App from './app'`)
+- Adding a jsconfig.json file to help with module resolution
+
+#### Build Process Stopping
+If the build process stops after "Running npm run vercel-build", try these solutions:
+- Set `SKIP_PREFLIGHT_CHECK=true` in your build command (already done in package.json)
+- Add a `.npmrc` file with `legacy-peer-deps=true` (already done)
+- Disable source maps by adding `GENERATE_SOURCEMAP=false` to environment variables (already done)
