@@ -6,7 +6,7 @@
     "start": "react-scripts start",
     "server": "node server.js",
     "server-dev": "nodemon server.js",
-    "dev": "concurrently \"npm run server-dev\" \"npm run start\"",
+    "dev": "concurrently \"npm run start\" \"npm run server-dev\"",
     "build": "CI=false SKIP_PREFLIGHT_CHECK=true GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -50,5 +50,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:3000"
 }

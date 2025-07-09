@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import AppRoutes from './routes';
+import AppRoutes from './Routes';
 import { checkServerHealth } from './services/serverService';
 
 function App() {
