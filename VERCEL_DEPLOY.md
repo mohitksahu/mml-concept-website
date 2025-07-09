@@ -89,8 +89,10 @@ npm notice
 
 #### Module Not Found Errors
 If you see an error like `Module not found: Error: Can't resolve './app' in '/vercel/path0/src'`, it means there's a case sensitivity issue or file extension problem in your imports. We've fixed these by:
-- Making sure imports use the correct file extensions (e.g., `import App from './app.jsx'` instead of `import App from './app'`)
+- Using proper React component naming convention with uppercase first letter (e.g., `App.jsx` instead of `app.jsx`)
+- Making sure imports use the correct file extensions and case (e.g., `import App from './App.jsx'` instead of `import App from './app'`)
 - Adding a jsconfig.json file to help with module resolution
+- Ensuring all component files follow the PascalCase naming convention
 
 #### Build Process Stopping
 If the build process stops after "Running npm run vercel-build", try these solutions:

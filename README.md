@@ -95,7 +95,7 @@ The application will automatically build the React frontend and serve it through
 │   │   ├── index.css        # Main stylesheet
 │   │   ├── tailwind.css     # Tailwind configuration
 │   │   └── navbar.css       # Component-specific styles
-│   ├── app.jsx          # Main application component
+│   ├── App.jsx          # Main application component
 │   ├── index.js         # Application entry point
 │   └── routes.jsx       # Application routing
 ├── .env                 # Frontend environment variables
