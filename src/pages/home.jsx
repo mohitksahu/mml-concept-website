@@ -10,7 +10,8 @@ const HeroSection = () => {
     "/MML/clip1_home.mp4",
     "/MML/clip2_home.mp4",
     "/MML/clip3_home.mp4",
-    "/MML/clip4_home.mp4"
+    "/MML/clip4_home.mp4",
+    "/MML/clip5_home.mp4"
   ];
 
   // Auto-slide to the left every 3 seconds (pause on hover, wait for initial animation)
