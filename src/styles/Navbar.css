@@ -187,11 +187,9 @@
 
 .navbar-btn.active {
     color: rgba(255, 255, 255, 0.9);
-    transform: translateY(-1px);
-}
-
-.navbar-btn.active::before {
-    width: 90%;
+    transform: translateY(0);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
 }
 
 /* Scrolled Navbar Button States */
@@ -246,8 +244,12 @@
 }
 
 .mobile-menu-btn:focus {
-    outline: 2px solid rgba(1, 1, 1, 0.5);
-    outline-offset: 2px;
+    outline: none;
+}
+
+.mobile-menu-btn.is-active {
+    outline: none;
+    box-shadow: none;
 }
 
 .hamburger-line {
@@ -383,6 +385,10 @@
 }
 
 @keyframes slideInItems {
+    from {
+        transform: translateX(50px);
+        opacity: 0;
+    }
     to {
         transform: translateX(0);
         opacity: 1;
@@ -414,10 +420,6 @@
     100% {
         transform: scale(1);
     }
-}
-
-.navbar-btn.is-clicked {
-    animation: navbarBtnClick 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ===== ENHANCED NAVBAR SHOW/HIDE ANIMATION WITH SPRING EFFECT ===== */
@@ -534,11 +536,11 @@ body {
     }
 
     .navbar-container {
-        height: 85px;
+        height: 120px; /* Increased to match the logo size */
     }
 
     .navbar-container.navbar-scrolled {
-        height: 75px;
+        height: 100px; /* Also increased for scrolled state */
     }
 
     .navbar-layout {
@@ -555,12 +557,13 @@ body {
     }
 
     .navbar-logo {
-        width: 85px;
-        height: 85px;
+        width: 120px;
+        height: 120px;
     }
 
     .mobile-menu-btn {
         display: flex;
+        right: 1.2rem; /* Adjusted for better positioning */
     }
 
     /* Mobile Navigation Menu */
@@ -570,18 +573,19 @@ body {
         right: -100%;
         width: 300px;
         height: calc(100vh - 85px);
-        background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        background: rgba(1, 1, 1, 0.95); /* Added semi-transparent background */
+        backdrop-filter: blur(10px); /* Added blur effect */
+        -webkit-backdrop-filter: blur(10px);
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
         gap: 2.5rem;
-        padding: 3rem 2rem;
+        padding: 6rem 2rem 3rem; /* Increased top padding to accommodate larger logo */
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        border-left: none;
-        box-shadow: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.1); /* Added subtle border */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Added shadow */
         overflow-y: auto;
+        z-index: 999; /* Ensure it's above other content */
     }
 
     .navbar-nav.mobile-open {
@@ -596,9 +600,9 @@ body {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        background: rgba(0, 0, 0, 0.6); /* Added semi-transparent overlay */
+        backdrop-filter: blur(4px); /* Added subtle blur */
+        -webkit-backdrop-filter: blur(4px);
         z-index: -1;
         animation: fadeInOverlay 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -612,11 +616,15 @@ body {
         padding: 15px 25px;
         color: #ffffff;
         border-radius: 8px;
-        transform: translateX(50px);
-        opacity: 0;
-        animation: slideInItems 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        /* Fixed initial opacity and transform to prevent flickering */
+        opacity: 1;
+        transform: translateX(0);
     }
 
+    .navbar-nav.mobile-open .navbar-btn {
+        animation: slideInItems 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
     .navbar-nav.mobile-open .navbar-btn:nth-child(1) {
         animation-delay: 0.1s;
     }
@@ -635,8 +643,9 @@ body {
 
     .navbar-btn.active {
         color: #ffffff;
-        transform: translateY(-1px) scale(1.02);
-        background-color: transparent !important;
+        transform: translateY(0);
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 8px;
         box-shadow: none !important;
     }
 
@@ -669,7 +678,7 @@ body {
     }
 
     .navbar-container {
-        height: 50px;
+        height: 90px; /* Increased for small screens */
     }
 
     .navbar-container.navbar-scrolled {
@@ -685,8 +694,8 @@ body {
     }
 
     .navbar-logo {
-        width: 40px;
-        height: 40px;
+        width: 80px;
+        height: 80px;
     }
 
     .navbar-nav {
@@ -728,11 +737,11 @@ body {
     }
 
     .navbar-container {
-        height: 46px;
+        height: 75px; /* Increased for extra small screens */
     }
 
     .navbar-container.navbar-scrolled {
-        height: 40px;
+        height: 65px; /* Increased for scrolled state */
     }
 
     .navbar-layout {
@@ -744,8 +753,8 @@ body {
     }
 
     .navbar-logo {
-        width: 36px;
-        height: 36px;
+        width: 65px;
+        height: 65px;
     }
 
     .navbar-nav {
@@ -816,29 +825,23 @@ body {
 
 .navbar-btn.active::before,
 .navbar-container.navbar-scrolled .navbar-btn.active::before {
-    content: '' !important;
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 50% !important;
-    width: 90% !important;
-    height: 2px !important;
-    opacity: 1 !important;
-    z-index: 999 !important;
-    background: linear-gradient(90deg, transparent, #ffffff, transparent) !important;
-    transform: translateX(-50%) !important;
-    display: block !important;
-    visibility: visible !important;
+    /* Remove animated underline for active state */
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
-/* For scrolled navbar - use white underline */
+/* For scrolled navbar - remove the underline completely */
 .navbar-container.navbar-scrolled .navbar-btn.active::before {
-    background: linear-gradient(90deg, transparent, #ffffff, transparent) !important;
+    display: none !important;
+    opacity: 0 !important;
 }
 
-/* For mobile - use white underline */
+/* For mobile - remove animated underline and use a subtle highlight instead */
 @media (max-width: 768px) {
-    .navbar-btn.active::before {
-        background: linear-gradient(90deg, transparent, #ffffff, transparent) !important;
+    .navbar-btn.active {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 8px;
     }
 }
 

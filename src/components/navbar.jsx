@@ -48,7 +48,9 @@ const Navbar = () => {
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
-    }; const handleNavClick = (section) => {
+    }; 
+    
+    const handleNavClick = (section) => {
         console.log(`Navigating to ${section}`);
         // Close mobile menu when nav item is clicked
         setIsMobileMenuOpen(false);
@@ -83,7 +85,9 @@ const Navbar = () => {
                 }
             }
         }
-    }; return (
+    };
+    
+    return (
         <header
             className={`navbar-container bg-primary ${isMobileMenuOpen ? 'mobile-menu-open' : ''} transition-all duration-1000 ease-out ${hasAnimated ? 'opacity-100 transform-none' : 'opacity-0 -translate-y-full'}`}
             style={{
@@ -106,9 +110,12 @@ const Navbar = () => {
                     </Link>
                 </div>                {/* Mobile Menu Button */}
                 <button
-                    className={`mobile-menu-btn transition-all duration-800 delay-700 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-90'}`}
+                    className={`mobile-menu-btn transition-all duration-500 ${hasAnimated ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-90'} ${isMobileMenuOpen ? 'is-active' : ''}`}
                     onClick={toggleMobileMenu}
+                    onFocus={(e) => e.currentTarget.blur()} /* Prevent focus outline */
                     aria-label="Toggle mobile menu"
+                    aria-expanded={isMobileMenuOpen}
+                    style={{ WebkitTapHighlightColor: 'transparent' }} /* Remove tap highlight on mobile */
                 >
                     <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
                     <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
