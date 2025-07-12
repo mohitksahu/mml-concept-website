@@ -41,8 +41,8 @@ const TeamSection = () => {
       role: "Creative Director & Founder",
       bio: "Arnesh Chakroborty is the broke co-founder of MML Concepts. Yes, the only reason he pitched this idea was so he could somehow escape the “broke jail.” The sole purpose of this brand, for him, is a get-rich scheme. But every decision he makes for the brand proves exactly why he has been broke for so long. Having a production house to fulfill his random imaginations is something only the rich should consider—but a broke person like him? Truly ambitious.Finally, he is really broke. Please support.",
       image: "/images/arnesh.jpg",
-      Instagram: "tobeaddedsoon",
-      Linkedin: "tobeaddedsoon",
+      Instagram: "https://www.instagram.com/arnesh.chak/",
+      Linkedin: "https://www.linkedin.com/in/arnesh-chakraborty-741b20249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
       specialties: ["Creative Direction", "Video Production", "Brand Strategy"]
     },
     {
@@ -50,8 +50,8 @@ const TeamSection = () => {
       name: "Ayush Ankit",
       role: "Manager",
       bio: "Ayush is the honorary team member of MML Concepts—brought in not for any particular skill, but mostly out of pity and long-standing friendship with the co-founders. He’s not at the center of anything, really. In fact, no one’s entirely sure why he’s here or what he contributes, including him. Sometimes he shows up with ideas that derail the actual agenda, other times he just vibes in the group chat. But somehow, his presence adds that perfect dose of chaos and comic relief the team didn’t know it needed. He’s not qualified, not responsible, and definitely not necessary—but damn, we’re glad he’s around. Please support. He’s just here for the ride. ",
-      Instagram: "tobeaddedsoon",
-      Linkedin: "tobeaddedsoon",
+      Instagram: "https://www.instagram.com/ayush_18jha/",
+      Linkedin: "https://www.linkedin.com/in/ayush-ankit-862151262?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
       image: "/images/ayush.jpg",
       specialties: ["Video Editing", "Motion Graphics", "Color Grading"]
     },
@@ -61,7 +61,7 @@ const TeamSection = () => {
       role: "Founder & Graphic Designer",
       bio: "Prajwal Pradipt Behera is the other half of this beautifully chaotic duo—the co-founder of MML Concepts and the brand’s primary graphic designer. A lazy genius if there ever was one, Prajwal is the kind of guy who'll procrastinate on a poster for days, only to whip up a masterpiece in the final hour like it was nothing. His creative talent is undeniable, his adaptability unmatched, and his work ethic... well, let’s just say it arrives fashionably late. MML Concepts thrives on his designs, even if they sometimes arrive seconds before the deadline. He may not move fast, but when he does, it’s straight-up brilliance. Please support—he’s talented, tired, and probably still asleep.",
       Instagram: "tobeaddedsoon",
-      Linkedin: "tobeaddedsoon",
+      Linkedin: "www.linkedin.com/in/prajwal-pradipt-behera-4794502aa",
       image: "/images/prajwal.jpg",
       specialties: ["Client Relations", "Project Management", "Business Strategy"]
     }
@@ -353,12 +353,47 @@ const TeamSection = () => {
                 <div className="space-y-6">
                   <div>
                     <p className="text-white/60 text-sm font-medium mb-2">LinkedIn</p>
-                    <p className="text-white text-base">{teamMembers[currentMemberIndex].Linkedin}</p>
+                    <a 
+                      href={teamMembers[currentMemberIndex].Linkedin.startsWith('http') ? 
+                        teamMembers[currentMemberIndex].Linkedin : 
+                        `https://${teamMembers[currentMemberIndex].Linkedin}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-white text-base hover:text-gold transition-colors duration-300 flex items-center"
+                    >
+                      Connect on LinkedIn
+                      <svg className="w-4 h-4 ml-1.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
+                        <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
+                      </svg>
+                    </a>
                   </div>
 
                   <div>
                     <p className="text-white/60 text-sm font-medium mb-2">Instagram</p>
-                    <p className="text-white text-base">{teamMembers[currentMemberIndex].Instagram}</p>
+                    <a 
+                      href={teamMembers[currentMemberIndex].Instagram.startsWith('http') ? 
+                        teamMembers[currentMemberIndex].Instagram : 
+                        (teamMembers[currentMemberIndex].Instagram === "tobeaddedsoon" ? 
+                          "#" : `https://${teamMembers[currentMemberIndex].Instagram}`)}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={`text-white text-base hover:text-gold transition-colors duration-300 flex items-center ${teamMembers[currentMemberIndex].Instagram === "tobeaddedsoon" ? 'cursor-not-allowed opacity-60' : ''}`}
+                      onClick={(e) => {
+                        if (teamMembers[currentMemberIndex].Instagram === "tobeaddedsoon") {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      {teamMembers[currentMemberIndex].Instagram === "tobeaddedsoon" ? 
+                        "Coming soon" : "Follow on Instagram"}
+                      {teamMembers[currentMemberIndex].Instagram !== "tobeaddedsoon" && (
+                        <svg className="w-4 h-4 ml-1.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
+                          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
+                        </svg>
+                      )}
+                    </a>
                   </div>
                 </div>
               </div>
